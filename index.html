@@ -33,13 +33,13 @@ body{overflow-x:hidden}
 
 /* NAV */
 nav{
-  height:72px;
+  height:76px;
   background:var(--w);
   border-bottom:1px solid var(--bd);
   display:grid;
   grid-template-columns:1fr auto 1fr;
   align-items:center;
-  padding:0 32px;
+  padding:0 28px;
   flex-shrink:0;
   z-index:10;
 }
@@ -47,39 +47,44 @@ nav{
 .nleft{
   display:flex;
   align-items:center;
-  gap:24px;
+  justify-content:flex-start;
+  min-width:0;
 }
 
 .nbrand{
+  grid-column:2;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:14px;
   cursor:pointer;
-  grid-column:2;
+  justify-self:center;
 }
 
 .nbrand img{
-  width:42px;
+  width:48px;
+  flex-shrink:0;
   filter:brightness(0) saturate(100%) invert(22%) sepia(40%) saturate(600%) hue-rotate(110deg) brightness(85%);
 }
 
 .nbrand-t{
   font-family:'Cormorant Garamond',serif;
-  font-size:24px;
+  font-size:25px;
   color:var(--g);
   font-style:italic;
   font-weight:700;
-  line-height:0.95;
+  line-height:1;
+  white-space:nowrap;
 }
 
 .nlinks{
   display:flex;
   justify-content:flex-start;
+  gap:2px;
 }
 
 .nbtn{
-  height:72px;
+  height:76px;
   padding:0 18px;
   display:flex;
   align-items:center;
@@ -95,11 +100,15 @@ nav{
   transition:color .15s,border-color .15s;
 }
 
+.nbtn:hover{color:var(--g)}
+.nbtn.active{color:var(--g);border-bottom-color:var(--g)}
+
 .nright{
   display:flex;
   align-items:center;
   justify-content:flex-end;
   gap:12px;
+  min-width:0;
 }
 
 .nadmin-btn{
@@ -114,9 +123,16 @@ nav{
   padding:8px 14px;
   transition:color .15s,border-color .15s;
 }
+
 .nadmin-btn:hover{color:var(--g);border-color:var(--g)}
 .nadmin-btn.signed-in{color:var(--g);border-color:var(--g3)}
-.nav-italic{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--mu)}
+.nav-italic{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  font-style:italic;
+  color:var(--mu);
+  white-space:nowrap;
+}
 
 /* PAGES */
 .page{display:none;flex:1;overflow-y:auto;background:var(--w)}
@@ -394,67 +410,74 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
     min-width: 0;
   }
 
-  nav {
-    height: auto;
-    padding: 14px 16px 12px;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+  nav{
+  height:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:14px 16px 12px;
+  gap:12px;
+}
 
-  .nleft {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+.nleft{
+  width:100%;
+  order:2;
+  justify-content:center;
+}
 
-  .nbrand {
-    width: 100%;
-    justify-content: center;
-    gap: 10px;
-    text-align: center;
-  }
+.nbrand{
+  order:1;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  text-align:center;
+}
 
-  .nbrand img {
-    width: 30px;
-  }
+.nbrand img{
+  width:36px;
+}
 
-  .nbrand-t {
-    font-size: 18px;
-    line-height: 1;
-  }
+.nbrand-t{
+  font-size:22px;
+  font-weight:700;
+  line-height:1;
+  white-space:nowrap;
+}
 
-  .nlinks {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-  }
+.nlinks{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+}
 
-  .nbtn {
-    height: 40px;
-    justify-content: center;
-    padding: 0 4px;
-    font-size: 10px;
-    letter-spacing: .12em;
-  }
+.nbtn{
+  height:42px;
+  justify-content:center;
+  padding:0 4px;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.12em;
+}
 
-  .nright {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+.nright{
+  order:3;
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
 
-  .nav-italic {
-    display: none;
-  }
+.nav-italic{
+  display:none;
+}
 
-  .nadmin-btn {
-    padding: 7px 14px;
-    font-size: 10px;
-  }
+.nadmin-btn{
+  padding:7px 14px;
+  font-size:10px;
+  font-weight:600;
+}
 
   .wrap,
   .rw,
@@ -698,22 +721,24 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
 <div id="app">
   <nav>
-    <div class="nleft">
-      <div class="nlinks">
-        <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
-        <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
-        <button class="nbtn" onclick="showPage('history')">Records</button>
-      </div>
-       <div class="nbrand" onclick="showPage('dashboard')">
-        <img src="images/mclogo2.png" alt="">
-        <span class="nbrand-t">McWilliam Open</span>
-      </div>
+  <div class="nleft">
+    <div class="nlinks">
+      <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
+      <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
+      <button class="nbtn" onclick="showPage('history')">Records</button>
     </div>
-    <div class="nright">
-      <span class="nav-italic">A tradition unlike any other</span>
-      <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
-    </div>
-  </nav>
+  </div>
+
+  <div class="nbrand" onclick="showPage('dashboard')">
+    <img src="images/mclogo2.png" alt="">
+    <span class="nbrand-t">McWilliam Open</span>
+  </div>
+
+  <div class="nright">
+    <span class="nav-italic">A tradition unlike any other</span>
+    <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
+  </div>
+</nav>
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
