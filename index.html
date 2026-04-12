@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a4731">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>McWilliam Open</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -14,7 +17,7 @@
   --mu:#9b9588;--tx:#1c1c1c;--tl:#5a5650;--red:#d32f2f;
 }
 html,body{height:100%;background:#000;font-family:'Inter',sans-serif;overflow:hidden;color:var(--tx)}
-
+  
 /* SPLASH */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 1.2s ease,visibility 1.2s ease}
 #splash.out{opacity:0;visibility:hidden;pointer-events:none}
@@ -718,6 +721,21 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
     padding: 0 14px;
   }
 }
+
+  .scw::-webkit-scrollbar,
+.ht::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scw::-webkit-scrollbar-thumb,
+.ht::-webkit-scrollbar-thumb {
+  background: var(--bd);
+}
+
+.scw::-webkit-scrollbar-track,
+.ht::-webkit-scrollbar-track {
+  background: transparent;
+}
 </style>
 </head>
 <body>
@@ -735,9 +753,9 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
         <span class="nbrand-t">McWilliam Open</span>
       </div>
       <div class="nlinks">
-        <button class="nbtn active" onclick="showPage('dashboard')">Dashboard</button>
+        <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
         <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
-        <button class="nbtn" onclick="showPage('history')">History</button>
+        <button class="nbtn" onclick="showPage('history')">Records</button>
       </div>
     </div>
     <div class="nright">
