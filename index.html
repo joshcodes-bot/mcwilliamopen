@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1a4731">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -97,11 +97,11 @@ nav{
   border:none;
   background:none;
   border-bottom:3px solid transparent;
-  transition:color .15s,border-color .15s;
+  transition:color .15s,border-color .15s, background .15s;
 }
 
 .nbtn:hover{color:var(--g)}
-.nbtn.active{color:var(--g);border-bottom-color:var(--g)}
+.nbtn.active{color:var(--g);border-bottom-color:var(--g);background:linear-gradient(to bottom, transparent 92%, rgba(26,71,49,0.06) 100%)}
 
 .nright{
   display:flex;
@@ -121,10 +121,10 @@ nav{
   border:1px solid var(--bd);
   background:none;
   padding:8px 14px;
-  transition:color .15s,border-color .15s;
+  transition:color .15s,border-color .15s, background .15s;
 }
 
-.nadmin-btn:hover{color:var(--g);border-color:var(--g)}
+.nadmin-btn:hover{color:var(--g);border-color:var(--g);background:#f7fbf8}
 .nadmin-btn.signed-in{color:var(--g);border-color:var(--g3)}
 .nav-italic{
   font-family:'Cormorant Garamond',serif;
@@ -149,7 +149,7 @@ nav{
 /* ── DASHBOARD ── */
 .wrap{max-width:1060px;margin:0 auto;padding:36px 32px 48px}
 .top-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);margin-bottom:24px}
-.champ-panel{background:var(--w);padding:28px 32px}
+.champ-panel{background:#fcfdfb;padding:28px 32px;border-left:3px solid var(--g)}
 .panel-eye{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--g3);font-weight:600;margin-bottom:14px}
 .champ-name{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;color:var(--g);line-height:1.05;margin-bottom:4px}
 .champ-sub{font-size:12px;color:var(--mu);letter-spacing:.03em;margin-bottom:18px}
@@ -187,14 +187,51 @@ nav{
   text-align:center;
 }
 
+
+.hero-strip{
+  max-width:1060px;
+  margin:0 auto 28px;
+  padding:22px 32px 18px;
+  text-align:center;
+  background:linear-gradient(to bottom, #f4f8f5 0%, #ffffff 100%);
+  border:1px solid var(--lg);
+}
+
+.hero-kicker{
+  font-size:10px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--g3);
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;
+  font-style:italic;
+  font-weight:700;
+  color:var(--g);
+  line-height:1;
+}
+
+.hero-sub{
+  margin-top:8px;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--mu);
+}
+
 /* Season standings */
 .sh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--g)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--g);position:relative;display:inline-block;padding-bottom:6px}
+.sec-title::after{content:'';position:absolute;left:0;bottom:0;width:36px;height:2px;background:var(--g3)}
 .sec-link{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);cursor:pointer;border:none;background:none}
 .sec-link:hover{text-decoration:underline}
 .season-row{border:1px solid var(--bd);margin-bottom:24px;background:var(--w)}
 .season-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd)}
-.player-card{background:var(--w);padding:20px 26px}
+.player-card{background:#fcfdfb;padding:20px 26px}
 .pc-pos{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
 .pc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--g);margin-bottom:2px}
 .pc-wins{font-size:12px;color:var(--tl)}
@@ -203,11 +240,11 @@ nav{
 .pc-bar-fill{height:2px;background:var(--g3);transition:width .6s ease}
 
 /* Latest round */
-.latest-card{border:1px solid var(--bd);background:var(--w);margin-bottom:24px}
+.latest-card{border:1px solid var(--bd);background:#fcfdfb;margin-bottom:24px}
 .lc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--bd)}
 .lc-course{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--g)}
 .lc-meta{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin-top:2px}
-.lc-winner{display:flex;align-items:center;gap:8px;background:#edf5f0;border:1px solid #b8d9c3;padding:6px 14px;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:var(--g);white-space:nowrap}
+.lc-winner{display:flex;align-items:center;gap:8px;background:#eef7f1;border:1px solid #c8decd;padding:6px 14px;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:var(--g);white-space:nowrap}
 .lc-body{padding:20px 24px}
 
 /* Round tiles */
@@ -230,14 +267,14 @@ nav{
 .ydiv{display:flex;align-items:center;gap:14px;margin-bottom:16px}
 .yl{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--g);font-weight:600;white-space:nowrap}
 .yline{flex:1;height:1px;background:var(--bd)}
-.rc{border:1px solid var(--bd);background:var(--w);margin-bottom:7px;cursor:pointer;transition:border-color .15s}
+.rc{border:1px solid var(--bd);background:#fcfdfb;margin-bottom:7px;cursor:pointer;transition:border-color .15s}
 .rc:hover{border-color:#9aaa9f}
 .rc.open{border-color:var(--g)}
 .rch{display:grid;grid-template-columns:160px 1fr auto 28px;align-items:center;gap:18px;padding:15px 20px}
 .rhd{font-size:13px;font-weight:600}
 .rhs{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);margin-top:1px}
 .rhco{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--g)}
-.rhw{display:flex;align-items:center;gap:7px;background:#edf5f0;border:1px solid #b8d9c3;padding:5px 12px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:var(--g);white-space:nowrap}
+.rhw{display:flex;align-items:center;gap:7px;background:#eef7f1;border:1px solid #c8decd;padding:5px 12px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:var(--g);white-space:nowrap}
 .rhch{width:26px;height:26px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mu);font-size:11px;transition:transform .25s;flex-shrink:0}
 .rc.open .rhch{transform:rotate(180deg)}
 .rcb{display:none;border-top:1px solid var(--bd);padding:22px 20px;animation:si .2s ease}
@@ -310,7 +347,7 @@ nav{
 .ph{font-family:'Cormorant Garamond',serif;font-size:38px;font-style:italic;color:var(--g);margin-bottom:4px}
 .ps{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mu);margin-bottom:32px}
 .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin-bottom:36px}
-.sb{background:var(--w);padding:20px 18px}
+.sb{background:#fcfdfb;padding:20px 18px}
 .sbn{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;color:var(--g);line-height:1}
 .sbl{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mu);margin-top:5px}
 .ht{width:100%;border-collapse:collapse;margin-bottom:44px}
@@ -320,16 +357,16 @@ nav{
 .hty{font-size:11px;letter-spacing:.07em;color:var(--mu)}
 .htn{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic}
 .hts{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--g)}
-.htb{display:inline-block;background:#edf5f0;border:1px solid #b8d9c3;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;color:var(--g);font-weight:600}
+.htb{display:inline-block;background:#eef7f1;border:1px solid #c8decd;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;color:var(--g);font-weight:600}
 .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
-.tc{background:var(--w);padding:30px 20px;text-align:center}
+.tc{background:#fcfdfb;padding:30px 20px;text-align:center}
 .tcn{font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:500;color:var(--g);line-height:1}
 .tcna{font-size:15px;font-weight:600;margin-top:10px}
 .tcy{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-top:4px}
 .tc.dim .tcn{color:#c0bbb3}
 
 /* FOOTER */
-footer{background:var(--g);padding:24px 32px;flex-shrink:0}
+footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid rgba(255,255,255,.08)}
 .fi{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .fb{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.45)}
 .fy{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.05em}
@@ -411,73 +448,87 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   }
 
   nav{
-  height:auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:14px 16px 12px;
-  gap:12px;
-}
+    height:auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:14px 16px 12px;
+    gap:12px;
+  }
 
-.nleft{
-  width:100%;
-  order:2;
-  justify-content:center;
-}
+  .nleft{
+    width:100%;
+    order:2;
+    justify-content:center;
+  }
 
-.nbrand{
-  order:1;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  text-align:center;
-}
+  .nbrand{
+    order:1;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-align:center;
+  }
 
-.nbrand img{
-  width:36px;
-}
+  .nbrand img{
+    width:36px;
+  }
 
-.nbrand-t{
-  font-size:22px;
-  font-weight:700;
-  line-height:1;
-  white-space:nowrap;
-}
+  .nbrand-t{
+    font-size:22px;
+    font-weight:700;
+    line-height:1;
+    white-space:nowrap;
+  }
 
-.nlinks{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:4px;
-}
+  .nlinks{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:4px;
+  }
 
-.nbtn{
-  height:42px;
-  justify-content:center;
-  padding:0 4px;
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:.12em;
-}
+  .nbtn{
+    height:42px;
+    justify-content:center;
+    padding:0 4px;
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:.12em;
+  }
 
-.nright{
-  order:3;
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
+  .nright{
+    order:3;
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
 
-.nav-italic{
-  display:none;
-}
+  .nav-italic{
+    display:none;
+  }
 
-.nadmin-btn{
-  padding:7px 14px;
-  font-size:10px;
-  font-weight:600;
-}
+  .nadmin-btn{
+    padding:7px 14px;
+    font-size:10px;
+    font-weight:600;
+  }
+
+  .hero-strip{
+    padding:18px 14px 16px;
+    margin:0 auto 20px;
+  }
+
+  .hero-title{
+    font-size:30px;
+  }
+
+  .hero-sub{
+    font-size:10px;
+    line-height:1.5;
+  }
 
   .wrap,
   .rw,
@@ -683,8 +734,8 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   .champ-name { font-size: 27px; }
   .ph { font-size: 26px; }
   .sec-title { font-size: 18px; }
-  .nbrand img { width: 26px; }
-  .nbrand-t { font-size: 16px; }
+  .nbrand img { width: 32px; }
+  .nbrand-t { font-size: 19px; font-weight: 700; }
   .nbtn { font-size: 9px; letter-spacing: .1em; }
   .mobile-score-table thead th:first-child,
   .mobile-score-table tbody td:first-child {
@@ -721,24 +772,24 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
 <div id="app">
   <nav>
-  <div class="nleft">
-    <div class="nlinks">
-      <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
-      <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
-      <button class="nbtn" onclick="showPage('history')">Records</button>
+    <div class="nleft">
+      <div class="nlinks">
+        <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
+        <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
+        <button class="nbtn" onclick="showPage('history')">Records</button>
+      </div>
     </div>
-  </div>
 
-  <div class="nbrand" onclick="showPage('dashboard')">
-    <img src="images/mclogo2.png" alt="">
-    <span class="nbrand-t">McWilliam Open</span>
-  </div>
+    <div class="nbrand" onclick="showPage('dashboard')">
+      <img src="images/mclogo2.png" alt="">
+      <span class="nbrand-t">McWilliam Open</span>
+    </div>
 
-  <div class="nright">
-    <span class="nav-italic">A tradition unlike any other</span>
-    <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
-  </div>
-</nav>
+    <div class="nright">
+      <span class="nav-italic">A tradition unlike any other</span>
+      <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
+    </div>
+  </nav>
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
@@ -1059,46 +1110,46 @@ function renderDashboard() {
     return;
   }
 
-  // Reigning champion = most recent championship round
-  const champ = allRounds.find(r => r.round_type === 'championship');
+  const champ = allRounds[0] || null;
   const champWinner = champ ? getWinner(champ.id) : null;
   const champPar = champ ? sumHoles(getPar(champ.course)) : 72;
+
   const allTimeWins = {};
   PLAYERS.forEach(p => allTimeWins[p] = 0);
-  allRounds.filter(r=>r.round_type==='championship').forEach(r => {
+  allRounds.forEach(r => {
     const w = getWinner(r.id);
-    if (w) allTimeWins[w.player] = (allTimeWins[w.player]||0)+1;
+    if (w) allTimeWins[w.player] = (allTimeWins[w.player] || 0) + 1;
   });
 
-  // 2026 season
   const currentYear = new Date().getFullYear();
   const seasonRounds = allRounds.filter(r => r.year === currentYear);
   const seasonWins = {};
   PLAYERS.forEach(p => seasonWins[p] = 0);
   seasonRounds.forEach(r => {
     const w = getWinner(r.id);
-    if (w) seasonWins[w.player] = (seasonWins[w.player]||0)+1;
+    if (w) seasonWins[w.player] = (seasonWins[w.player] || 0) + 1;
   });
   const maxSeasonWins = Math.max(...Object.values(seasonWins), 1);
 
-  // Sort players by season wins
   const sortedPlayers = [...PLAYERS].sort((a,b) => seasonWins[b]-seasonWins[a]);
 
-  // Most recent round
   const latest = allRounds[0];
   const latestWinner = getWinner(latest.id);
   const latestPar = sumHoles(getPar(latest.course));
-
-  // Previous 3 rounds (skip latest)
   const prev = allRounds.slice(1,4);
-
   const champTitles = champWinner ? allTimeWins[champWinner.player] : 0;
 
   document.getElementById('dash-content').innerHTML = `
     <div class="wrap">
+      <div class="hero-strip">
+        <div class="hero-kicker">McWilliam Open</div>
+        <div class="hero-title">Family Matchplay Ledger</div>
+        <div class="hero-sub">Scores, rounds, records and the Boxing Day crown</div>
+      </div>
+
       <div class="top-row">
         <div class="champ-panel">
-          <div class="panel-eye">Reigning Champion</div>
+          <div class="panel-eye">Latest Winner</div>
           <div class="champ-name">${champWinner ? champWinner.player+' McWilliam' : '—'}</div>
           <div class="champ-sub">${champ ? formatDate(champ.date)+' &nbsp;·&nbsp; '+champ.course : ''}</div>
           <div class="champ-stats">
@@ -1112,7 +1163,7 @@ function renderDashboard() {
             </div>
             <div class="cstat">
               <div class="cstat-n">${champTitles}</div>
-              <div class="cstat-l">All-Time Titles</div>
+              <div class="cstat-l">All-Time Wins</div>
             </div>
           </div>
         </div>
@@ -1187,7 +1238,10 @@ function renderDashboard() {
     </div>
     <footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2026</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
 
-  tick(); setInterval(tick, 30000);
+  tick();
+  if (!window.__mcwTickInterval) {
+    window.__mcwTickInterval = setInterval(tick, 30000);
+  }
 }
 
 function tick() {
