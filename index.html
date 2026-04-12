@@ -54,8 +54,9 @@ nav{height:58px;background:var(--w);border-bottom:1px solid var(--bd);display:fl
 .page::-webkit-scrollbar-thumb{background:var(--bd)}
 
 /* LOADING STATE */
-.loading{text-align:center;padding:80px 32px;color:var(--mu);font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic}
-.loading::after{content:'';display:inline-block;width:16px;height:16px;border:2px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin-left:10px;vertical-align:middle}
+#dash-content,#rounds-content,#history-content{min-height:100%;display:flex;flex-direction:column}
+#dash-content>.wrap,#rounds-content>.rw,#history-content>.hw{flex:1}
+.loading{display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── DASHBOARD ── */
@@ -552,9 +553,9 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   .bi,
   .bsq,
   .dbq {
-    width: 20px;
-    height: 20px;
-    font-size: 11px;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
   }
 
   footer {
@@ -564,7 +565,8 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
   .fi {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 6px;
   }
 
@@ -644,17 +646,17 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
-    <div id="dash-content" class="loading">Loading</div>
+    <div id="dash-content"></div>
   </div>
 
   <!-- ROUNDS -->
   <div id="page-rounds" class="page">
-    <div id="rounds-content" class="loading">Loading</div>
+    <div id="rounds-content"></div>
   </div>
 
   <!-- HISTORY -->
   <div id="page-history" class="page">
-    <div id="history-content" class="loading">Loading</div>
+    <div id="history-content"></div>
   </div>
 </div>
 
