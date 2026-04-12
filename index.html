@@ -772,11 +772,6 @@ function renderHistory() {
           <div class="sbn">${courseRecord ? courseRecord.total : '—'}</div>
           <div class="sbl">Course Record${crRound ? ` (${crRound.year})` : ''}</div>
         </div>
-        <div class="sb">
-          <div class="sbn">${courseRecord ? toPar(courseRecord.total, sumHoles(getPar(crRound?.course || ''))) : '—'}</div>
-          <div class="sbl">Best to Par</div>
-        </div>
-      </div>
 
       <table class="ht">
         <thead>
