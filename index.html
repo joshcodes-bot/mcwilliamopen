@@ -736,58 +736,96 @@ function renderRounds() {
     });
     html += '</div>';
   });
-  html += `</div><footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2020</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
+  html += `</div><footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2026</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
   document.getElementById('rounds-content').innerHTML = html;
 }
 
 // ── HISTORY PAGE ──
 function renderHistory() {
-  const champRounds = allRounds.filter(r => r.round_type === 'championship').sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const wins = {}; PLAYERS.forEach(p => wins[p] = []);
-  champRounds.forEach(r => {
+  const historyRounds = [...allRounds].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const wins = {};
+  PLAYERS.forEach(p => wins[p] = []);
+
+  historyRounds.forEach(r => {
     const w = getWinner(r.id);
     if (w) wins[w.player].push(r.year);
   });
-  const courseRecord = allScores.reduce((best,s) => (!best||s.total<best.total)?s:best, null);
-  const crRound = courseRecord ? allRounds.find(r=>r.id===courseRecord.round_id) : null;
+
+  const courseRecord = allScores.reduce((best,s) => (!best || s.total < best.total) ? s : best, null);
+  const crRound = courseRecord ? allRounds.find(r => r.id === courseRecord.round_id) : null;
 
   document.getElementById('history-content').innerHTML = `
     <div class="hw">
       <div class="ph">All-Time Records</div>
-      <div class="ps">McWilliam Open &middot; Boxing Day Championship</div>
+      <div class="ps">McWilliam Open &middot; All Rounds</div>
+
       <div class="sg">
-        <div class="sb"><div class="sbn">${champRounds.length}</div><div class="sbl">Championships</div></div>
-        <div class="sb"><div class="sbn">${PLAYERS.reduce((b,p)=>wins[p].length>wins[b].length?p:b,PLAYERS[0])}</div><div class="sbl">Most titles</div></div>
-        <div class="sb"><div class="sbn">${courseRecord?courseRecord.total:'—'}</div><div class="sbl">Course record${crRound?` (${crRound.year})`:''}</div></div>
-        <div class="sb"><div class="sbn">${courseRecord?toPar(courseRecord.total,sumHoles(getPar(crRound?.course||''))):'—'}</div><div class="sbl">Best to par</div></div>
+        <div class="sb">
+          <div class="sbn">${historyRounds.length}</div>
+          <div class="sbl">Total Rounds</div>
+        </div>
+        <div class="sb">
+          <div class="sbn">${PLAYERS.reduce((b,p)=>wins[p].length>wins[b].length?p:b,PLAYERS[0])}</div>
+          <div class="sbl">Most Wins</div>
+        </div>
+        <div class="sb">
+          <div class="sbn">${courseRecord ? courseRecord.total : '—'}</div>
+          <div class="sbl">Course Record${crRound ? ` (${crRound.year})` : ''}</div>
+        </div>
+        <div class="sb">
+          <div class="sbn">${courseRecord ? toPar(courseRecord.total, sumHoles(getPar(crRound?.course || ''))) : '—'}</div>
+          <div class="sbl">Best to Par</div>
+        </div>
       </div>
+
       <table class="ht">
-        <thead><tr><th>Year</th><th>Champion</th><th>Score</th><th>Course</th><th>Event</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Winner</th>
+            <th>Score</th>
+            <th>Course</th>
+            <th>Round Type</th>
+          </tr>
+        </thead>
         <tbody>
-          ${champRounds.map(r=>{
-            const w=getWinner(r.id);
-            const par=sumHoles(getPar(r.course));
+          ${historyRounds.map(r => {
+            const w = getWinner(r.id);
+            const par = sumHoles(getPar(r.course));
             return `<tr>
               <td class="hty">${r.year}</td>
-              <td class="htn">${w?w.player+' McWilliam':'—'}</td>
-              <td class="hts">${w?`${w.total} (${toPar(w.total,par)})`:''}</td>
+              <td class="htn">${w ? w.player : '—'}</td>
+              <td class="hts">${w ? `${w.total} (${toPar(w.total, par)})` : ''}</td>
               <td style="font-size:13px;color:var(--mu)">${r.course}</td>
-              <td><span class="htb">Boxing Day</span></td>
+              <td>
+                <span class="htb">${r.round_type === 'championship' ? 'Championship' : 'Season'}</span>
+              </td>
             </tr>`;
           }).join('')}
         </tbody>
       </table>
-      <div class="ydiv" style="margin-bottom:20px"><div class="yl">Win Tally</div><div class="yline"></div></div>
+
+      <div class="ydiv" style="margin-bottom:20px">
+        <div class="yl">Win Tally</div>
+        <div class="yline"></div>
+      </div>
+
       <div class="tg">
         ${[...PLAYERS].sort((a,b)=>wins[b].length-wins[a].length).map((p,i)=>`
           <div class="tc ${i>0?'dim':''}">
             <div class="tcn" ${i>1?'style="color:#c0bbb3"':''}>${wins[p].length}</div>
             <div class="tcna">${p}</div>
-            <div class="tcy">${wins[p].join(' &middot; ')||'—'}</div>
-          </div>`).join('')}
+            <div class="tcy">${wins[p].join(' &middot; ') || '—'}</div>
+          </div>
+        `).join('')}
       </div>
     </div>
-    <footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2020</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
+    <footer>
+      <div class="fi">
+        <div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2026</div>
+        <div class="fy">&copy; 2026 McWilliam Family</div>
+      </div>
+    </footer>`;
 }
 
 // ── NAV ──
