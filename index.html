@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>McWilliam Open</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1a4731;--g2:#205a3d;--g3:#2d7a52;--g4:#0f3320;
+  --w:#ffffff;--of:#f7f5f0;--lg:#e8e3d8;--bd:#d9d4c9;
+  --mu:#9b9588;--tx:#1c1c1c;--tl:#5a5650;--red:#d32f2f;
+}
+html,body{height:100%;background:#000;font-family:'Source Sans 3',sans-serif;overflow:hidden;color:var(--tx)}
+
+/* SPLASH */
+#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 1.2s ease,visibility 1.2s ease}
+#splash.out{opacity:0;visibility:hidden;pointer-events:none}
+#slogo{width:185px;filter:brightness(0) invert(1);opacity:0;transform:scale(0.84) translateY(6px);transition:opacity 1.1s cubic-bezier(.22,1,.36,1),transform 1.1s cubic-bezier(.22,1,.36,1)}
+#slogo.show{opacity:1;transform:scale(1) translateY(0)}
+#sname{margin-top:26px;font-family:'EB Garamond',serif;font-size:13px;font-weight:400;letter-spacing:.55em;text-transform:uppercase;color:rgba(255,255,255,0.32);opacity:0;transition:opacity .9s ease .5s}
+#sname.show{opacity:1}
+
+/* APP */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .9s ease;background:var(--w)}
+#app.show{opacity:1;overflow:hidden}
+
+/* NAV */
+nav{height:58px;background:var(--w);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 32px;flex-shrink:0;z-index:10}
+.nleft{display:flex;align-items:center;gap:36px}
+.nbrand{display:flex;align-items:center;gap:11px;cursor:pointer}
+.nbrand img{width:30px;filter:brightness(0) saturate(100%) invert(22%) sepia(40%) saturate(600%) hue-rotate(110deg) brightness(85%)}
+.nbrand-t{font-family:'EB Garamond',serif;font-size:18px;color:var(--g);font-style:italic;font-weight:500}
+.nlinks{display:flex}
+.nbtn{height:58px;padding:0 16px;display:flex;align-items:center;font-size:11.5px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--tl);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.nbtn:hover{color:var(--g)}
+.nbtn.active{color:var(--g);border-bottom-color:var(--g)}
+.nright{display:flex;align-items:center;gap:12px}
+.nadmin-btn{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);cursor:pointer;border:1px solid var(--bd);background:none;padding:5px 12px;transition:color .15s,border-color .15s}
+.nadmin-btn:hover{color:var(--g);border-color:var(--g)}
+.nadmin-btn.signed-in{color:var(--g);border-color:var(--g3)}
+.nav-italic{font-family:'EB Garamond',serif;font-size:14px;font-style:italic;color:var(--mu)}
+
+/* PAGES */
+.page{display:none;flex:1;overflow-y:auto;background:var(--w)}
+.page.active{display:block}
+.page::-webkit-scrollbar{width:3px}
+.page::-webkit-scrollbar-thumb{background:var(--bd)}
+
+/* LOADING STATE */
+.loading{text-align:center;padding:80px 32px;color:var(--mu);font-family:'EB Garamond',serif;font-size:18px;font-style:italic}
+.loading::after{content:'';display:inline-block;width:16px;height:16px;border:2px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin-left:10px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── DASHBOARD ── */
+.wrap{max-width:1060px;margin:0 auto;padding:36px 32px 48px}
+.top-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);margin-bottom:24px}
+.champ-panel{background:var(--w);padding:28px 32px}
+.panel-eye{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--g3);font-weight:600;margin-bottom:14px}
+.champ-name{font-family:'EB Garamond',serif;font-size:38px;font-weight:500;color:var(--g);line-height:1.05;margin-bottom:4px}
+.champ-sub{font-size:12px;color:var(--mu);letter-spacing:.03em;margin-bottom:18px}
+.champ-stats{display:flex;gap:0;border-top:1px solid var(--lg);padding-top:16px;margin-top:2px}
+.cstat{padding-right:24px}
+.cstat+.cstat{padding-left:24px;border-left:1px solid var(--lg)}
+.cstat-n{font-family:'EB Garamond',serif;font-size:30px;font-weight:500;color:var(--g);line-height:1}
+.cstat-l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+.countdown-panel{background:var(--of);padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+.cdrow{display:flex;align-items:flex-end;margin-top:12px}
+.cdu{text-align:center;padding:0 20px}
+.cdu:first-child{padding-left:0}
+.cdu+.cdu{border-left:1px solid var(--bd)}
+.cdn{font-family:'EB Garamond',serif;font-size:52px;font-weight:500;line-height:1;color:var(--g)}
+.cdl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);margin-top:5px}
+.cd-date{font-family:'EB Garamond',serif;font-size:14px;font-style:italic;color:var(--mu);margin-top:14px}
+
+/* Season standings */
+.sh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.sec-title{font-family:'EB Garamond',serif;font-size:22px;font-style:italic;color:var(--g)}
+.sec-link{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);cursor:pointer;border:none;background:none}
+.sec-link:hover{text-decoration:underline}
+.season-row{border:1px solid var(--bd);margin-bottom:24px;background:var(--w)}
+.season-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd)}
+.player-card{background:var(--w);padding:20px 26px}
+.pc-pos{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
+.pc-name{font-family:'EB Garamond',serif;font-size:24px;font-weight:500;color:var(--g);margin-bottom:2px}
+.pc-wins{font-size:12px;color:var(--tl)}
+.pc-wins strong{font-weight:600;color:var(--tx)}
+.pc-bar{height:2px;background:var(--lg);margin-top:12px}
+.pc-bar-fill{height:2px;background:var(--g3);transition:width .6s ease}
+
+/* Latest round */
+.latest-card{border:1px solid var(--bd);background:var(--w);margin-bottom:24px}
+.lc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--bd)}
+.lc-course{font-family:'EB Garamond',serif;font-size:22px;font-style:italic;color:var(--g)}
+.lc-meta{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin-top:2px}
+.lc-winner{display:flex;align-items:center;gap:8px;background:#edf5f0;border:1px solid #b8d9c3;padding:6px 14px;font-family:'EB Garamond',serif;font-size:16px;font-weight:500;color:var(--g);white-space:nowrap}
+.lc-body{padding:20px 24px}
+
+/* Round tiles */
+.rtiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
+.rtile{background:var(--w);padding:20px 20px;cursor:pointer;transition:background .12s;position:relative;overflow:hidden}
+.rtile:hover{background:var(--of)}
+.rtile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.rtile:hover::after{transform:scaleX(1)}
+.tdate{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+.tcourse{font-family:'EB Garamond',serif;font-size:17px;font-style:italic;color:var(--g);margin-bottom:12px;line-height:1.25}
+.twin{display:flex;align-items:baseline;justify-content:space-between}
+.twn{font-size:13px;font-weight:600;color:var(--tx)}
+.tws{font-family:'EB Garamond',serif;font-size:20px;color:var(--g)}
+.tarr{position:absolute;top:18px;right:16px;font-size:12px;color:var(--bd);transition:color .15s}
+.rtile:hover .tarr{color:var(--g3)}
+
+/* ── ROUNDS PAGE ── */
+.rw{max-width:980px;margin:0 auto;padding:40px 32px}
+.yb{margin-bottom:44px}
+.ydiv{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.yl{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--g);font-weight:600;white-space:nowrap}
+.yline{flex:1;height:1px;background:var(--bd)}
+.rc{border:1px solid var(--bd);background:var(--w);margin-bottom:7px;cursor:pointer;transition:border-color .15s}
+.rc:hover{border-color:#9aaa9f}
+.rc.open{border-color:var(--g)}
+.rch{display:grid;grid-template-columns:160px 1fr auto 28px;align-items:center;gap:18px;padding:15px 20px}
+.rhd{font-size:13px;font-weight:600}
+.rhs{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);margin-top:1px}
+.rhco{font-family:'EB Garamond',serif;font-size:18px;font-style:italic;color:var(--g)}
+.rhw{display:flex;align-items:center;gap:7px;background:#edf5f0;border:1px solid #b8d9c3;padding:5px 12px;font-family:'EB Garamond',serif;font-size:15px;font-weight:500;color:var(--g);white-space:nowrap}
+.rhch{width:26px;height:26px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mu);font-size:11px;transition:transform .25s;flex-shrink:0}
+.rc.open .rhch{transform:rotate(180deg)}
+.rcb{display:none;border-top:1px solid var(--bd);padding:22px 20px;animation:si .2s ease}
+.rc.open .rcb{display:block}
+@keyframes si{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Scorecard */
+.scw{overflow-x:auto;margin-bottom:16px}
+.sc{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820px}
+.sc thead tr.hr th{background:var(--g);color:#fff;padding:8px 5px;text-align:center;font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.sc thead tr.hr th:first-child{text-align:left;padding-left:14px;min-width:88px}
+.sc thead tr.hr th.s2{background:var(--g4)}
+.sc .pr td{background:#e8f0e8;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--g4);padding:5px;text-align:center;border:none;font-weight:600}
+.sc .pr td:first-child{text-align:left;padding-left:14px}
+.sc tbody td{padding:9px 5px;text-align:center;border-bottom:1px solid var(--lg);font-size:13px}
+.sc tbody td:first-child{text-align:left;padding-left:14px;font-weight:600}
+.sc tbody tr:hover td{background:#fafaf7}
+.sub{background:#eaf2ea!important;font-weight:700;color:var(--g4)}
+.tot{background:#d5e8d5!important;font-weight:700;color:var(--g4);font-size:13.5px}
+.wr td{background:#f3fbf5}
+.bi{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--g3);color:var(--g);font-size:12px;font-weight:600}
+.bsq{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:1.5px solid var(--red);color:var(--red);font-size:12px;font-weight:600}
+.db{color:#b71c1c;font-weight:700}
+.rev{border-left:3px solid var(--g);padding:16px 20px;background:#f5fbf7;font-family:'EB Garamond',serif;font-size:16px;font-style:italic;line-height:1.8;color:var(--tx)}
+.revl{font-family:'Source Sans 3',sans-serif;font-style:normal;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--g3);font-weight:600;margin-bottom:8px}
+
+/* ── HISTORY ── */
+.hw{max-width:900px;margin:0 auto;padding:40px 32px}
+.ph{font-family:'EB Garamond',serif;font-size:38px;font-style:italic;color:var(--g);margin-bottom:4px}
+.ps{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mu);margin-bottom:32px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin-bottom:36px}
+.sb{background:var(--w);padding:20px 18px}
+.sbn{font-family:'EB Garamond',serif;font-size:38px;font-weight:500;color:var(--g);line-height:1}
+.sbl{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mu);margin-top:5px}
+.ht{width:100%;border-collapse:collapse;margin-bottom:44px}
+.ht th{background:var(--g);color:#fff;text-align:left;padding:10px 16px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.ht td{padding:14px 16px;border-bottom:1px solid var(--lg);font-size:14px}
+.ht tr:hover td{background:var(--of)}
+.hty{font-size:11px;letter-spacing:.07em;color:var(--mu)}
+.htn{font-family:'EB Garamond',serif;font-size:19px;font-style:italic}
+.hts{font-family:'EB Garamond',serif;font-size:20px;color:var(--g)}
+.htb{display:inline-block;background:#edf5f0;border:1px solid #b8d9c3;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;color:var(--g);font-weight:600}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
+.tc{background:var(--w);padding:30px 20px;text-align:center}
+.tcn{font-family:'EB Garamond',serif;font-size:60px;font-weight:500;color:var(--g);line-height:1}
+.tcna{font-size:15px;font-weight:600;margin-top:10px}
+.tcy{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-top:4px}
+.tc.dim .tcn{color:#c0bbb3}
+
+/* FOOTER */
+footer{background:var(--g);padding:24px 32px;flex-shrink:0}
+.fi{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.fb{font-family:'EB Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.45)}
+.fy{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.05em}
+
+/* ── MODAL / OVERLAY ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.overlay.open{opacity:1;visibility:visible}
+.modal{background:#fff;border:1px solid var(--bd);width:92vw;max-width:960px;max-height:92vh;overflow-y:auto;transform:translateY(10px);transition:transform .25s;display:flex;flex-direction:column}
+.overlay.open .modal{transform:translateY(0)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:#fff;z-index:1;flex-shrink:0}
+.modal-title{font-family:'EB Garamond',serif;font-size:22px;font-style:italic;color:var(--g)}
+.modal-sub{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin-top:2px}
+.modal-close{background:none;border:1px solid var(--bd);color:var(--mu);cursor:pointer;width:30px;height:30px;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s,color .15s}
+.modal-close:hover{border-color:var(--tx);color:var(--tx)}
+.modal-body{padding:24px;flex:1}
+
+/* ── ADD ROUND FORM ── */
+.form-section{margin-bottom:28px}
+.form-section-title{font-family:'EB Garamond',serif;font-size:18px;font-style:italic;color:var(--g);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--lg)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:6px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tl);font-weight:600}
+.form-input{border:1px solid var(--bd);padding:8px 12px;font-size:14px;font-family:'Source Sans 3',sans-serif;color:var(--tx);background:var(--w);transition:border-color .15s;width:100%}
+.form-input:focus{outline:none;border-color:var(--g)}
+.form-input.hole-input{padding:7px 5px;text-align:center;font-size:13px}
+.form-select{border:1px solid var(--bd);padding:8px 12px;font-size:14px;font-family:'Source Sans 3',sans-serif;color:var(--tx);background:var(--w);width:100%;cursor:pointer}
+.form-select:focus{outline:none;border-color:var(--g)}
+.form-textarea{border:1px solid var(--bd);padding:10px 12px;font-size:14px;font-family:'Source Sans 3',sans-serif;color:var(--tx);background:var(--w);width:100%;min-height:80px;resize:vertical}
+.form-textarea:focus{outline:none;border-color:var(--g)}
+.player-block{background:var(--of);border:1px solid var(--bd);padding:16px;margin-bottom:12px}
+.player-block-name{font-family:'EB Garamond',serif;font-size:16px;font-style:italic;color:var(--g);margin-bottom:12px;font-weight:500}
+.hole-grid{display:grid;grid-template-columns:repeat(9,1fr) 40px repeat(9,1fr) 40px 50px;gap:4px;align-items:center}
+.hole-label{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);text-align:center;margin-bottom:4px}
+.sub-cell{background:#eaf2ea;border:1px solid #c3dece;font-size:12px;font-weight:700;color:var(--g4);text-align:center;padding:7px 2px;min-width:0}
+.tot-cell{background:#d5e8d5;border:1px solid #a8d5b5;font-size:13px;font-weight:700;color:var(--g4);text-align:center;padding:7px 2px;min-width:0}
+.form-submit{background:var(--g);color:#fff;border:none;padding:12px 32px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:background .15s;margin-top:8px}
+.form-submit:hover{background:var(--g2)}
+.form-submit:disabled{background:var(--mu);cursor:not-allowed}
+.form-error{color:var(--red);font-size:13px;margin-top:8px}
+.form-success{color:var(--g);font-size:13px;margin-top:8px;font-style:italic;font-family:'EB Garamond',serif}
+
+/* Login form */
+.login-form{padding:40px;max-width:400px;margin:0 auto}
+.login-title{font-family:'EB Garamond',serif;font-size:28px;font-style:italic;color:var(--g);margin-bottom:6px}
+.login-sub{font-size:12px;color:var(--mu);margin-bottom:28px;letter-spacing:.03em}
+
+/* Hole totals label row */
+.hole-labels-row{display:grid;grid-template-columns:repeat(9,1fr) 40px repeat(9,1fr) 40px 50px;gap:4px;margin-bottom:4px}
+.hl{font-size:9px;text-align:center;color:var(--mu);letter-spacing:.04em}
+.hl.sub{background:none!important;font-size:9px;color:var(--g4)}
+.hl.tot2{background:none!important;font-size:9px;color:var(--g4)}
+
+@media(max-width:768px){
+  .top-row,.rtiles,.season-inner{grid-template-columns:1fr}
+  .rch{grid-template-columns:1fr auto 26px}
+  .rhco{display:none}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+  .wrap,.rw,.hw{padding:20px 16px}
+  .hole-grid,.hole-labels-row{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <img id="slogo" src="/mnt/user-data/uploads/ChatGPT_Image_Apr_12__2026__06_29_22_PM.png" alt="McWilliam Open">
+  <div id="sname">McWilliam Open</div>
+</div>
+
+<div id="app">
+  <nav>
+    <div class="nleft">
+      <div class="nbrand" onclick="showPage('dashboard')">
+        <img src="/mnt/user-data/uploads/ChatGPT_Image_Apr_12__2026__06_29_22_PM.png" alt="">
+        <span class="nbrand-t">McWilliam Open</span>
+      </div>
+      <div class="nlinks">
+        <button class="nbtn active" onclick="showPage('dashboard')">Dashboard</button>
+        <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
+        <button class="nbtn" onclick="showPage('history')">History</button>
+      </div>
+    </div>
+    <div class="nright">
+      <span class="nav-italic">A tradition unlike any other</span>
+      <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div id="dash-content" class="loading">Loading</div>
+  </div>
+
+  <!-- ROUNDS -->
+  <div id="page-rounds" class="page">
+    <div id="rounds-content" class="loading">Loading</div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="page-history" class="page">
+    <div id="history-content" class="loading">Loading</div>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
+<div class="overlay" id="admin-overlay" onclick="overlayClick(event,'admin-overlay')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Admin</div>
+        <div class="modal-sub">Sign in to manage rounds</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('admin-overlay')">&#10005;</button>
+    </div>
+    <div class="modal-body" id="admin-body">
+      <div class="login-form" style="padding:0">
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" id="login-email" placeholder="your@email.com">
+        </div>
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button class="form-submit" onclick="doLogin()">Sign In</button>
+        <div class="form-error" id="login-error" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ROUND OVERLAY -->
+<div class="overlay" id="round-overlay" onclick="overlayClick(event,'round-overlay')">
+  <div class="modal" style="max-width:980px">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="round-modal-title">Add New Round</div>
+        <div class="modal-sub">Enter scorecard details below</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('round-overlay')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-section-title">Round Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input class="form-input" type="date" id="f-date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Course</label>
+            <input class="form-input" type="text" id="f-course" placeholder="e.g. Waikato Golf Club" list="course-list">
+            <datalist id="course-list">
+              <option value="Waikato Golf Club">
+              <option value="Hamilton Golf Club">
+              <option value="St Andrews Hamilton">
+            </datalist>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Round Type</label>
+            <select class="form-select" id="f-type">
+              <option value="season">Season Round</option>
+              <option value="championship">Boxing Day Championship</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year</label>
+            <input class="form-input" type="number" id="f-year" value="2026">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Scorecards</div>
+        <div id="player-scores">
+          <!-- Josh -->
+          <div class="player-block">
+            <div class="player-block-name">Josh</div>
+            <div class="hole-labels-row" id="labels-row"></div>
+            <div class="hole-grid" id="josh-grid"></div>
+          </div>
+          <!-- Dad -->
+          <div class="player-block">
+            <div class="player-block-name">Dad</div>
+            <div class="hole-grid" id="dad-grid"></div>
+          </div>
+          <!-- Cam -->
+          <div class="player-block">
+            <div class="player-block-name">Cam</div>
+            <div class="hole-grid" id="cam-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Round Review</div>
+        <div class="form-group">
+          <label class="form-label">Review (optional)</label>
+          <textarea class="form-textarea" id="f-review" placeholder="A brief summary of how the round played out..."></textarea>
+        </div>
+      </div>
+
+      <button class="form-submit" id="submit-round" onclick="submitRound()">Save Round</button>
+      <div class="form-error" id="round-error" style="display:none"></div>
+      <div class="form-success" id="round-success" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://qcwsoyqovrrxkyqwhtnk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjd3NveXFvdnJyeGt5cXdodG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NzM1OTksImV4cCI6MjA5MTU0OTU5OX0.PanWQGPwH9peu8Vjhwjr_k_JCLzkzfA4zLfQ6s633K0';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const PLAYERS = ['Josh','Dad','Cam'];
+const HOLES = Array.from({length:18},(_,i)=>i+1);
+const PAR_DEFAULT = [4,5,3,4,4,3,4,5,4,4,3,5,4,4,3,4,5,4];
+
+// Cache
+let allRounds = [], allScores = [], allPars = {}, currentUser = null;
+
+// ── SPLASH ──
+window.addEventListener('load', async () => {
+  setTimeout(() => {
+    document.getElementById('slogo').classList.add('show');
+    document.getElementById('sname').classList.add('show');
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('out');
+      document.getElementById('app').classList.add('show');
+    }, 2400);
+  }, 150);
+
+  // Check existing session
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { currentUser = session.user; updateAdminBtn(); }
+
+  await loadData();
+  renderDashboard();
+  buildHoleForm();
+});
+
+// ── DATA LOADING ──
+async function loadData() {
+  const [r1, r2, r3] = await Promise.all([
+    sb.from('rounds').select('*').order('date', { ascending: false }),
+    sb.from('scores').select('*'),
+    sb.from('course_pars').select('*')
+  ]);
+  allRounds = r1.data || [];
+  allScores = r2.data || [];
+  (r3.data || []).forEach(p => { allPars[p.course] = p; });
+}
+
+// ── HELPERS ──
+function getPar(course) {
+  const p = allPars[course];
+  if (!p) return PAR_DEFAULT;
+  return HOLES.map(h => p['h'+h] || 4);
+}
+
+function getScoresForRound(roundId) {
+  return allScores.filter(s => s.round_id === roundId);
+}
+
+function calcOut(scores, h) { return scores.slice(0,9).reduce((a,v)=>a+(v||0),0); }
+function calcIn(scores)  { return scores.slice(9).reduce((a,v)=>a+(v||0),0); }
+function sumHoles(scores){ return scores.reduce((a,v)=>a+(v||0),0); }
+
+function holeScores(score) {
+  return HOLES.map(h => score['h'+h]);
+}
+
+function getWinner(roundId) {
+  const scores = getScoresForRound(roundId);
+  if (!scores.length) return null;
+  return scores.reduce((best, s) => s.total < best.total ? s : best);
+}
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('en-NZ', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function formatDateShort(d) {
+  return new Date(d).toLocaleDateString('en-NZ', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function toPar(total, par) {
+  const diff = total - par;
+  if (diff === 0) return 'E';
+  return diff > 0 ? '+'+diff : ''+diff;
+}
+
+function scoreCellHtml(stroke, par) {
+  if (stroke == null) return '<td>—</td>';
+  const diff = stroke - par;
+  if (diff <= -2) return `<td><span class="bi" style="background:#c8e6c9;border-color:var(--g)">${stroke}</span></td>`;
+  if (diff === -1) return `<td><span class="bi">${stroke}</span></td>`;
+  if (diff === 1)  return `<td><span class="bsq">${stroke}</span></td>`;
+  if (diff >= 2)   return `<td><span class="db">${stroke}</span></td>`;
+  return `<td>${stroke}</td>`;
+}
+
+function buildScorecard(roundId, course) {
+  const par = getPar(course);
+  const scores = getScoresForRound(roundId);
+  const winner = getWinner(roundId);
+  const parTotal = sumHoles(par);
+  const parOut = par.slice(0,9).reduce((a,v)=>a+v,0);
+  const parIn  = par.slice(9).reduce((a,v)=>a+v,0);
+
+  let html = `<div class="scw"><table class="sc"><thead>
+    <tr class="hr">
+      <th></th>
+      ${HOLES.slice(0,9).map(h=>`<th>${h}</th>`).join('')}
+      <th class="s2">Out</th>
+      ${HOLES.slice(9).map(h=>`<th>${h}</th>`).join('')}
+      <th class="s2">In</th><th class="s2">Total</th>
+    </tr>
+    <tr class="pr">
+      <td>Par</td>
+      ${par.slice(0,9).map(p=>`<td>${p}</td>`).join('')}
+      <td>${parOut}</td>
+      ${par.slice(9).map(p=>`<td>${p}</td>`).join('')}
+      <td>${parIn}</td><td>${parTotal}</td>
+    </tr>
+  </thead><tbody>`;
+
+  PLAYERS.forEach(player => {
+    const s = scores.find(x => x.player === player);
+    if (!s) return;
+    const hs = holeScores(s);
+    const out = hs.slice(0,9).reduce((a,v)=>a+(v||0),0);
+    const inp = hs.slice(9).reduce((a,v)=>a+(v||0),0);
+    const tot = s.total;
+    const isWin = winner && s.player === winner.player;
+    html += `<tr class="${isWin?'wr':''}">
+      <td>${player}${isWin?' 🏆':''}</td>
+      ${hs.slice(0,9).map((v,i)=>scoreCellHtml(v,par[i])).join('')}
+      <td class="sub">${out}</td>
+      ${hs.slice(9).map((v,i)=>scoreCellHtml(v,par[i+9])).join('')}
+      <td class="sub">${inp}</td>
+      <td class="tot">${tot} (${toPar(tot,parTotal)})</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  if (!allRounds.length) {
+    document.getElementById('dash-content').innerHTML = '<div class="wrap"><p style="color:var(--mu);font-style:italic;font-family:EB Garamond,serif;font-size:18px">No rounds yet. Add your first round via the Admin button.</p></div>';
+    return;
+  }
+
+  // Reigning champion = most recent championship round
+  const champ = allRounds.find(r => r.round_type === 'championship');
+  const champWinner = champ ? getWinner(champ.id) : null;
+  const champPar = champ ? sumHoles(getPar(champ.course)) : 72;
+  const allTimeWins = {};
+  PLAYERS.forEach(p => allTimeWins[p] = 0);
+  allRounds.filter(r=>r.round_type==='championship').forEach(r => {
+    const w = getWinner(r.id);
+    if (w) allTimeWins[w.player] = (allTimeWins[w.player]||0)+1;
+  });
+
+  // 2026 season
+  const currentYear = new Date().getFullYear();
+  const seasonRounds = allRounds.filter(r => r.year === currentYear);
+  const seasonWins = {};
+  PLAYERS.forEach(p => seasonWins[p] = 0);
+  seasonRounds.forEach(r => {
+    const w = getWinner(r.id);
+    if (w) seasonWins[w.player] = (seasonWins[w.player]||0)+1;
+  });
+  const maxSeasonWins = Math.max(...Object.values(seasonWins), 1);
+
+  // Sort players by season wins
+  const sortedPlayers = [...PLAYERS].sort((a,b) => seasonWins[b]-seasonWins[a]);
+
+  // Most recent round
+  const latest = allRounds[0];
+  const latestWinner = getWinner(latest.id);
+  const latestPar = sumHoles(getPar(latest.course));
+
+  // Previous 3 rounds (skip latest)
+  const prev = allRounds.slice(1,4);
+
+  const champTitles = champWinner ? allTimeWins[champWinner.player] : 0;
+
+  document.getElementById('dash-content').innerHTML = `
+    <div class="wrap">
+      <div class="top-row">
+        <div class="champ-panel">
+          <div class="panel-eye">Reigning Champion</div>
+          <div class="champ-name">${champWinner ? champWinner.player+' McWilliam' : '—'}</div>
+          <div class="champ-sub">${champ ? formatDate(champ.date)+' &nbsp;·&nbsp; '+champ.course : ''}</div>
+          <div class="champ-stats">
+            <div class="cstat">
+              <div class="cstat-n">${champWinner ? toPar(champWinner.total, champPar) : '—'}</div>
+              <div class="cstat-l">Score to Par</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-n">${champWinner ? champWinner.total : '—'}</div>
+              <div class="cstat-l">Gross Score</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-n">${champTitles}</div>
+              <div class="cstat-l">All-Time Titles</div>
+            </div>
+          </div>
+        </div>
+        <div class="countdown-panel">
+          <div>
+            <div class="panel-eye">Next Championship</div>
+            <div class="cdrow">
+              <div class="cdu"><div class="cdn" id="cd-d">--</div><div class="cdl">Days</div></div>
+              <div class="cdu"><div class="cdn" id="cd-h">--</div><div class="cdl">Hrs</div></div>
+              <div class="cdu"><div class="cdn" id="cd-m">--</div><div class="cdl">Min</div></div>
+            </div>
+            <div class="cd-date">26 December ${currentYear} &nbsp;·&nbsp; Boxing Day</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sh">
+        <div class="sec-title">${currentYear} Season</div>
+        <button class="sec-link" onclick="showPage('history')">All-time records &rarr;</button>
+      </div>
+      <div class="season-row">
+        <div class="season-inner">
+          ${sortedPlayers.map((p,i)=>`
+            <div class="player-card">
+              <div class="pc-pos">${['1st','2nd','3rd'][i]}</div>
+              <div class="pc-name">${p}</div>
+              <div class="pc-wins"><strong>${seasonWins[p]}</strong> win${seasonWins[p]!==1?'s':''} &nbsp;·&nbsp; ${seasonRounds.length} rounds played</div>
+              <div class="pc-bar"><div class="pc-bar-fill" style="width:${maxSeasonWins>0?(seasonWins[p]/maxSeasonWins*100):0}%"></div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="sh">
+        <div class="sec-title">Most Recent Round</div>
+        <button class="sec-link" onclick="showPage('rounds')">All rounds &rarr;</button>
+      </div>
+      <div class="latest-card">
+        <div class="lc-head">
+          <div>
+            <div class="lc-course">${latest.course}</div>
+            <div class="lc-meta">${formatDate(latest.date)} &nbsp;·&nbsp; ${latest.round_type==='championship'?'Boxing Day Championship':'Season Round'} &nbsp;·&nbsp; ${latest.year}</div>
+          </div>
+          ${latestWinner ? `<div class="lc-winner">&#127942; ${latestWinner.player} McWilliam &nbsp;&mdash;&nbsp; ${latestWinner.total} (${toPar(latestWinner.total,latestPar)})</div>` : ''}
+        </div>
+        <div class="lc-body">
+          ${buildScorecard(latest.id, latest.course)}
+          ${latest.review ? `<div class="rev"><div class="revl">Round Review</div>${latest.review}</div>` : ''}
+        </div>
+      </div>
+
+      ${prev.length ? `
+      <div class="sh">
+        <div class="sec-title">Previous Rounds</div>
+        <button class="sec-link" onclick="showPage('rounds')">View all &rarr;</button>
+      </div>
+      <div class="rtiles">
+        ${prev.map(r => {
+          const w = getWinner(r.id);
+          const par = sumHoles(getPar(r.course));
+          return `<div class="rtile" onclick="showPage('rounds')">
+            <div class="tarr">&rarr;</div>
+            <div class="tdate">${formatDateShort(r.date)}&nbsp;·&nbsp;${r.round_type==='championship'?'Championship':'Round'}</div>
+            <div class="tcourse">${r.course}</div>
+            <div class="twin">
+              <span class="twn">${w?w.player+' McWilliam':'—'}</span>
+              <span class="tws">${w?w.total:'—'}</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>` : ''}
+    </div>
+    <footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2020</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
+
+  tick(); setInterval(tick, 30000);
+}
+
+function tick() {
+  const d = new Date('2026-12-26T08:00:00+13:00') - new Date();
+  if (d <= 0) return;
+  const el = id => document.getElementById(id);
+  if (el('cd-d')) {
+    el('cd-d').textContent = Math.floor(d/86400000);
+    el('cd-h').textContent = String(Math.floor((d%86400000)/3600000)).padStart(2,'0');
+    el('cd-m').textContent = String(Math.floor((d%3600000)/60000)).padStart(2,'0');
+  }
+}
+
+// ── ROUNDS PAGE ──
+function renderRounds() {
+  if (!allRounds.length) {
+    document.getElementById('rounds-content').innerHTML = '<div class="rw"><p style="color:var(--mu);font-style:italic;font-family:EB Garamond,serif;font-size:18px">No rounds recorded yet.</p></div>';
+    return;
+  }
+
+  // Group by year
+  const byYear = {};
+  allRounds.forEach(r => {
+    const key = r.round_type === 'championship' ? `Boxing Day Championship ${r.year}` : `${r.year} Season`;
+    if (!byYear[key]) byYear[key] = [];
+    byYear[key].push(r);
+  });
+
+  let html = '<div class="rw">';
+  Object.entries(byYear).forEach(([label, rounds]) => {
+    html += `<div class="yb"><div class="ydiv"><div class="yl">${label}</div><div class="yline"></div></div>`;
+    rounds.forEach(r => {
+      const winner = getWinner(r.id);
+      const par = sumHoles(getPar(r.course));
+      html += `
+        <div class="rc" onclick="toggleCard(this)">
+          <div class="rch">
+            <div><div class="rhd">${formatDate(r.date)}</div><div class="rhs">${r.round_type==='championship'?'Championship':'Season Round'}</div></div>
+            <div class="rhco">${r.course}</div>
+            <div class="rhw">${winner?`&#127942; ${winner.player} &nbsp;${winner.total} (${toPar(winner.total,par)})`:''}</div>
+            <div class="rhch">&#9662;</div>
+          </div>
+          <div class="rcb">
+            ${buildScorecard(r.id, r.course)}
+            ${r.review ? `<div class="rev"><div class="revl">Round Review</div>${r.review}</div>` : ''}
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+  html += `</div><footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2020</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
+  document.getElementById('rounds-content').innerHTML = html;
+}
+
+// ── HISTORY PAGE ──
+function renderHistory() {
+  const champRounds = allRounds.filter(r => r.round_type === 'championship').sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const wins = {}; PLAYERS.forEach(p => wins[p] = []);
+  champRounds.forEach(r => {
+    const w = getWinner(r.id);
+    if (w) wins[w.player].push(r.year);
+  });
+  const courseRecord = allScores.reduce((best,s) => (!best||s.total<best.total)?s:best, null);
+  const crRound = courseRecord ? allRounds.find(r=>r.id===courseRecord.round_id) : null;
+
+  document.getElementById('history-content').innerHTML = `
+    <div class="hw">
+      <div class="ph">All-Time Records</div>
+      <div class="ps">McWilliam Open &middot; Boxing Day Championship</div>
+      <div class="sg">
+        <div class="sb"><div class="sbn">${champRounds.length}</div><div class="sbl">Championships</div></div>
+        <div class="sb"><div class="sbn">${PLAYERS.reduce((b,p)=>wins[p].length>wins[b].length?p:b,PLAYERS[0])}</div><div class="sbl">Most titles</div></div>
+        <div class="sb"><div class="sbn">${courseRecord?courseRecord.total:'—'}</div><div class="sbl">Course record${crRound?` (${crRound.year})`:''}</div></div>
+        <div class="sb"><div class="sbn">${courseRecord?toPar(courseRecord.total,sumHoles(getPar(crRound?.course||''))):'—'}</div><div class="sbl">Best to par</div></div>
+      </div>
+      <table class="ht">
+        <thead><tr><th>Year</th><th>Champion</th><th>Score</th><th>Course</th><th>Event</th></tr></thead>
+        <tbody>
+          ${champRounds.map(r=>{
+            const w=getWinner(r.id);
+            const par=sumHoles(getPar(r.course));
+            return `<tr>
+              <td class="hty">${r.year}</td>
+              <td class="htn">${w?w.player+' McWilliam':'—'}</td>
+              <td class="hts">${w?`${w.total} (${toPar(w.total,par)})`:''}</td>
+              <td style="font-size:13px;color:var(--mu)">${r.course}</td>
+              <td><span class="htb">Boxing Day</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      <div class="ydiv" style="margin-bottom:20px"><div class="yl">Win Tally</div><div class="yline"></div></div>
+      <div class="tg">
+        ${[...PLAYERS].sort((a,b)=>wins[b].length-wins[a].length).map((p,i)=>`
+          <div class="tc ${i>0?'dim':''}">
+            <div class="tcn" ${i>1?'style="color:#c0bbb3"':''}>${wins[p].length}</div>
+            <div class="tcna">${p}</div>
+            <div class="tcy">${wins[p].join(' &middot; ')||'—'}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <footer><div class="fi"><div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2020</div><div class="fy">&copy; 2026 McWilliam Family</div></div></footer>`;
+}
+
+// ── NAV ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const i = ['dashboard','rounds','history'].indexOf(id);
+  document.querySelectorAll('.nbtn')[i]?.classList.add('active');
+  if (id === 'rounds') renderRounds();
+  if (id === 'history') renderHistory();
+}
+
+function toggleCard(c) {
+  const was = c.classList.contains('open');
+  document.querySelectorAll('.rc').forEach(x => x.classList.remove('open'));
+  if (!was) c.classList.add('open');
+}
+
+// ── OVERLAYS ──
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+function overlayClick(e, id) { if (e.target === document.getElementById(id)) closeOverlay(id); }
+
+// ── ADMIN ──
+function updateAdminBtn() {
+  const btn = document.getElementById('admin-btn');
+  if (currentUser) {
+    btn.textContent = '+ Add Round';
+    btn.classList.add('signed-in');
+    btn.onclick = () => openOverlay('round-overlay');
+  } else {
+    btn.textContent = 'Admin';
+    btn.classList.remove('signed-in');
+    btn.onclick = openAdminPanel;
+  }
+}
+
+function openAdminPanel() {
+  if (currentUser) { openOverlay('round-overlay'); return; }
+  openOverlay('admin-overlay');
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+  currentUser = data.user;
+  updateAdminBtn();
+  closeOverlay('admin-overlay');
+  openOverlay('round-overlay');
+}
+
+// ── ADD ROUND FORM ──
+function buildHoleForm() {
+  // Label row
+  const labelsEl = document.getElementById('labels-row');
+  if (!labelsEl) return;
+  const labels = [...HOLES.slice(0,9).map(h=>`<div class="hl">${h}</div>`), '<div class="hl sub">Out</div>', ...HOLES.slice(9).map(h=>`<div class="hl">${h}</div>`), '<div class="hl sub">In</div>', '<div class="hl tot2">Tot</div>'];
+  labelsEl.innerHTML = labels.join('');
+
+  PLAYERS.forEach(player => {
+    const gridEl = document.getElementById(player.toLowerCase()+'-grid');
+    if (!gridEl) return;
+    let cells = '';
+    for (let h = 1; h <= 18; h++) {
+      cells += `<input class="form-input hole-input" type="number" id="${player}-h${h}" min="1" max="15" oninput="updateTotals('${player}')">`;
+      if (h === 9) cells += `<div class="sub-cell" id="${player}-out">—</div>`;
+    }
+    cells += `<div class="sub-cell" id="${player}-in">—</div>`;
+    cells += `<div class="tot-cell" id="${player}-tot">—</div>`;
+    gridEl.innerHTML = cells;
+  });
+}
+
+function updateTotals(player) {
+  let out = 0, inp = 0;
+  for (let h=1;h<=9;h++)  { const v=parseInt(document.getElementById(`${player}-h${h}`)?.value)||0; out+=v; }
+  for (let h=10;h<=18;h++){ const v=parseInt(document.getElementById(`${player}-h${h}`)?.value)||0; inp+=v; }
+  const outEl = document.getElementById(`${player}-out`);
+  const inEl  = document.getElementById(`${player}-in`);
+  const totEl = document.getElementById(`${player}-tot`);
+  if (outEl) outEl.textContent = out || '—';
+  if (inEl)  inEl.textContent  = inp || '—';
+  if (totEl) totEl.textContent = (out+inp) || '—';
+}
+
+async function submitRound() {
+  const btn = document.getElementById('submit-round');
+  const err = document.getElementById('round-error');
+  const suc = document.getElementById('round-success');
+  err.style.display = 'none'; suc.style.display = 'none';
+
+  const date   = document.getElementById('f-date').value;
+  const course = document.getElementById('f-course').value.trim();
+  const type   = document.getElementById('f-type').value;
+  const year   = parseInt(document.getElementById('f-year').value);
+  const review = document.getElementById('f-review').value.trim();
+
+  if (!date || !course || !year) { err.textContent = 'Please fill in date, course and year.'; err.style.display='block'; return; }
+
+  // Check at least one player has scores
+  const hasScores = PLAYERS.some(p => parseInt(document.getElementById(`${p}-h1`)?.value));
+  if (!hasScores) { err.textContent = 'Please enter at least one player\'s scores.'; err.style.display='block'; return; }
+
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  // Insert round
+  const { data: rData, error: rErr } = await sb.from('rounds').insert({ date, course, round_type: type, year, review: review||null }).select().single();
+  if (rErr) { err.textContent = rErr.message; err.style.display='block'; btn.disabled=false; btn.textContent='Save Round'; return; }
+
+  // Insert scores
+  const scoreRows = PLAYERS.map(player => {
+    const row = { round_id: rData.id, player };
+    HOLES.forEach(h => { row[`h${h}`] = parseInt(document.getElementById(`${player}-h${h}`)?.value)||null; });
+    return row;
+  }).filter(row => HOLES.some(h => row[`h${h}`] != null));
+
+  const { error: sErr } = await sb.from('scores').insert(scoreRows);
+  if (sErr) { err.textContent = sErr.message; err.style.display='block'; btn.disabled=false; btn.textContent='Save Round'; return; }
+
+  suc.textContent = 'Round saved successfully!';
+  suc.style.display = 'block';
+  btn.disabled = false; btn.textContent = 'Save Round';
+
+  // Reload data and refresh
+  await loadData();
+  renderDashboard();
+  if (document.getElementById('page-rounds').classList.contains('active')) renderRounds();
+  if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+
+  // Clear form
+  setTimeout(() => {
+    document.getElementById('f-date').value = '';
+    document.getElementById('f-course').value = '';
+    document.getElementById('f-review').value = '';
+    PLAYERS.forEach(p => { HOLES.forEach(h => { const el = document.getElementById(`${p}-h${h}`); if(el) el.value=''; }); updateTotals(p); });
+    suc.style.display = 'none';
+    closeOverlay('round-overlay');
+  }, 1500);
+}
+</script>
+</body>
+</html>
