@@ -873,7 +873,9 @@ async function submitRound() {
   if (!date || !course || !year) { err.textContent = 'Please fill in date, course and year.'; err.style.display='block'; return; }
 
   // Check at least one player has scores
-  const hasScores = PLAYERS.some(p => parseInt(document.getElementById(`${p}-h1`)?.value));
+  const hasScores = PLAYERS.some(player =>
+  HOLES.some(h => parseInt(document.getElementById(`${player}-h${h}`)?.value))
+);
   if (!hasScores) { err.textContent = 'Please enter at least one player\'s scores.'; err.style.display='block'; return; }
 
   btn.disabled = true; btn.textContent = 'Saving...';
