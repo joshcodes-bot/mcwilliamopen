@@ -169,17 +169,30 @@ nav{height:58px;background:var(--w);border-bottom:1px solid var(--bd);display:fl
 .bi{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--g3);color:var(--g);font-size:12px;font-weight:600}
 .bsq{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:1.5px solid var(--red);color:var(--red);font-size:12px;font-weight:600}
 .db{color:#b71c1c;font-weight:700}
-  .dbq{
+.dbq{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   width:22px;
   height:22px;
-  border:2px solid var(--red);
-  box-shadow: inset 0 0 0 1px var(--red);
+  position:relative;
   color:var(--red);
   font-size:12px;
-  font-weight:600;
+  font-weight:400;
+  line-height:1;
+}
+
+.dbq::before,
+.dbq::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border:1.5px solid var(--red);
+  pointer-events:none;
+}
+
+.dbq::after{
+  inset:3px;
 }
 .rev{border-left:3px solid var(--g);padding:16px 20px;background:#f5fbf7;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.8;color:var(--tx)}
 .revl{font-family:'Inter',sans-serif;font-style:normal;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--g3);font-weight:600;margin-bottom:8px}
