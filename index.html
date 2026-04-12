@@ -362,15 +362,15 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
             <div class="hole-labels-row" id="labels-row"></div>
             <div class="hole-grid" id="josh-grid"></div>
           </div>
-          <!-- Dad -->
+          <!-- Nige -->
           <div class="player-block">
-            <div class="player-block-name">Dad</div>
-            <div class="hole-grid" id="dad-grid"></div>
+            <div class="player-block-name">Nige</div>
+            <div class="hole-grid" id="Nige-grid"></div>
           </div>
-          <!-- Cam -->
+          <!-- Lachie -->
           <div class="player-block">
-            <div class="player-block-name">Cam</div>
-            <div class="hole-grid" id="cam-grid"></div>
+            <div class="player-block-name">Lachie</div>
+            <div class="hole-grid" id="Lachie-grid"></div>
           </div>
         </div>
       </div>
@@ -395,7 +395,7 @@ const SUPABASE_URL = 'https://qcwsoyqovrrxkyqwhtnk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjd3NveXFvdnJyeGt5cXdodG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NzM1OTksImV4cCI6MjA5MTU0OTU5OX0.PanWQGPwH9peu8Vjhwjr_k_JCLzkzfA4zLfQ6s633K0';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const PLAYERS = ['Josh','Dad','Cam'];
+const PLAYERS = ['Josh','Nige','Lachie'];
 const HOLES = Array.from({length:18},(_,i)=>i+1);
 const PAR_DEFAULT = [4,5,3,4,4,3,4,5,4,4,3,5,4,4,3,4,5,4];
 
