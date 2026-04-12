@@ -16,7 +16,8 @@
   --w:#ffffff;--of:#f7f5f0;--lg:#e8e3d8;--bd:#d9d4c9;
   --mu:#9b9588;--tx:#1c1c1c;--tl:#5a5650;--red:#d32f2f;
 }
-html,body{height:100%;background:#000;font-family:'Inter',sans-serif;overflow:hidden;color:var(--tx)}
+html,body{height:100%;width:100%;max-width:100%;background:#000;font-family:'Inter',sans-serif;overflow:hidden;color:var(--tx)}
+body{overflow-x:hidden}
   
 /* SPLASH */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 1.2s ease,visibility 1.2s ease}
@@ -156,15 +157,15 @@ nav{height:58px;background:var(--w);border-bottom:1px solid var(--bd);display:fl
 @keyframes si{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 
 /* Scorecard */
-.scw{overflow-x:auto;margin-bottom:16px}
-.sc{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820px}
+.scw{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;border:1px solid var(--lg);background:#fff}
+.sc{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820px;table-layout:fixed}
 .sc thead tr.hr th{background:var(--g);color:#fff;padding:8px 5px;text-align:center;font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.sc thead tr.hr th:first-child{text-align:left;padding-left:14px;min-width:88px}
+.sc thead tr.hr th:first-child{text-align:left;padding-left:14px;min-width:116px;width:116px}
 .sc thead tr.hr th.s2{background:var(--g4)}
-.sc .pr td{background:#e8f0e8;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--g4);padding:5px;text-align:center;border:none;font-weight:600}
+.sc .pr td{background:#e8f0e8;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--g4);padding:6px 5px;text-align:center;border:none;font-weight:600}
 .sc .pr td:first-child{text-align:left;padding-left:14px}
-.sc tbody td{padding:9px 5px;text-align:center;border-bottom:1px solid var(--lg);font-size:13px}
-.sc tbody td:first-child{text-align:left;padding-left:14px;font-weight:600}
+.sc tbody td{padding:10px 5px;text-align:center;border-bottom:1px solid var(--lg);font-size:13px}
+.sc tbody td:first-child{text-align:left;padding-left:14px;font-weight:600;white-space:nowrap}
 .sc tbody tr:hover td{background:#fafaf7}
 .sub{background:#eaf2ea!important;font-weight:700;color:var(--g4)}
 .tot{background:#d5e8d5!important;font-weight:700;color:var(--g4);font-size:13.5px}
@@ -197,6 +198,22 @@ nav{height:58px;background:var(--w);border-bottom:1px solid var(--bd);display:fl
 .dbq::after{
   inset:3px;
 }
+.scorecard-mobile{display:none}
+.mobile-card{border:1px solid var(--lg);background:#fff;margin-bottom:12px}
+.mobile-card:last-child{margin-bottom:0}
+.mobile-card-title{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--of);border-bottom:1px solid var(--lg)}
+.mobile-card-title span:first-child{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--g)}
+.mobile-total{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3);font-weight:600}
+.mobile-score-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.mobile-score-table th,.mobile-score-table td{border-bottom:1px solid var(--lg);padding:8px 3px;text-align:center}
+.mobile-score-table thead th{background:var(--g);color:#fff;font-size:8px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.mobile-score-table thead th:first-child,.mobile-score-table tbody td:first-child{width:72px;text-align:left;padding-left:10px}
+.mobile-score-table tbody td:first-child{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--g);white-space:nowrap}
+.mobile-score-table .par-row td{background:#eef4ef;color:var(--g4);font-size:10px;font-weight:600;text-transform:uppercase}
+.mobile-score-table .sum-cell{background:#eaf2ea;font-weight:700;color:var(--g4)}
+.mobile-score-table .total-cell{background:#d5e8d5;font-weight:700;color:var(--g4);font-size:12px}
+.mobile-score-table .winner-row td{background:#f3fbf5}
+.mobile-score-table tbody tr:last-child td{border-bottom:none}
 .rev{border-left:3px solid var(--g);padding:16px 20px;background:#f5fbf7;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.8;color:var(--tx)}
 .revl{font-family:'Inter',sans-serif;font-style:normal;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--g3);font-weight:600;margin-bottom:8px}
 
@@ -265,7 +282,7 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 .form-submit:hover{background:var(--g2)}
 .form-submit:disabled{background:var(--mu);cursor:not-allowed}
 .form-error{color:var(--red);font-size:13px;margin-top:8px}
-.form-success{color:var(--g);font-size:13px;margin-top:8px;font-style:italic;font-family:'EB Garamond',serif}
+.form-success{color:var(--g);font-size:13px;margin-top:8px;font-style:italic;font-family:'Cormorant Garamond',serif}
 
 /* Login form */
 .login-form{padding:40px;max-width:400px;margin:0 auto}
@@ -280,55 +297,82 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
 @media (max-width: 768px) {
   html, body {
+    max-width: 100%;
     overflow-x: hidden;
+  }
+
+  #app,
+  .page,
+  .wrap,
+  .rw,
+  .hw,
+  footer,
+  .fi,
+  .top-row,
+  .rtiles,
+  .season-inner,
+  .sg,
+  .tg,
+  .latest-card,
+  .rc,
+  .rcb,
+  .scw,
+  .rev {
+    max-width: 100%;
+    min-width: 0;
   }
 
   nav {
     height: auto;
-    padding: 12px 14px;
+    padding: 14px 16px 12px;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .nleft,
-  .nright {
-    width: 100%;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 12px;
   }
 
   .nleft {
-    gap: 14px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 
   .nbrand {
-    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
   }
 
   .nbrand img {
-    width: 24px;
+    width: 30px;
   }
 
   .nbrand-t {
-    font-size: 15px;
+    font-size: 18px;
+    line-height: 1;
   }
 
   .nlinks {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
   }
 
   .nbtn {
     height: 40px;
-    flex: 1;
     justify-content: center;
-    padding: 0 8px;
+    padding: 0 4px;
     font-size: 10px;
-    letter-spacing: .08em;
+    letter-spacing: .12em;
+  }
+
+  .nright {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .nav-italic {
@@ -336,14 +380,14 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   }
 
   .nadmin-btn {
-    padding: 6px 10px;
+    padding: 7px 14px;
     font-size: 10px;
   }
 
   .wrap,
   .rw,
   .hw {
-    padding: 16px 12px 24px;
+    padding: 18px 14px 26px;
   }
 
   .top-row,
@@ -354,7 +398,7 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   }
 
   .sg {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
   }
 
   .champ-panel,
@@ -373,211 +417,84 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
     padding: 18px 16px;
   }
 
-  .champ-name {
-    font-size: 30px;
-  }
+  .champ-name { font-size: 31px; }
+  .champ-sub { font-size: 11px; line-height: 1.4; }
+  .cstat { padding-right: 14px; }
+  .cstat + .cstat { padding-left: 14px; }
+  .cstat-n { font-size: 24px; }
 
-  .champ-sub {
-    font-size: 11px;
-    line-height: 1.4;
-  }
+  .countdown-panel { align-items: center; text-align: center; }
+  .cdrow { justify-content: center; width: 100%; margin-top: 10px; }
+  .cdu { padding: 0 12px; }
+  .cdn { font-size: 40px; }
+  .cdl { font-size: 9px; }
+  .cd-date { font-size: 13px; line-height: 1.4; }
 
-  .champ-stats {
-    gap: 0;
-    padding-top: 12px;
-  }
-
-  .cstat {
-    padding-right: 14px;
-  }
-
-  .cstat + .cstat {
-    padding-left: 14px;
-  }
-
-  .cstat-n {
-    font-size: 24px;
-  }
-
-  .countdown-panel {
-    align-items: center;
-    text-align: center;
-    padding: 20px 16px;
-  }
-
-  .cdrow {
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .cdu {
-    padding: 0 12px;
-  }
-
-  .cdn {
-    font-size: 40px;
-  }
-
-  .cdl {
-    font-size: 9px;
-  }
-
-  .cd-date {
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .sh {
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .sec-title {
-    font-size: 20px;
-  }
-
-  .sec-link {
-    font-size: 10px;
-  }
-
-  .player-card {
-    padding: 16px 18px;
-  }
-
-  .pc-name {
-    font-size: 22px;
-  }
+  .sh { align-items: center; gap: 10px; margin-bottom: 10px; }
+  .sec-title { font-size: 20px; }
+  .sec-link { font-size: 10px; }
+  .player-card { padding: 16px 18px; }
+  .pc-name { font-size: 22px; }
 
   .lc-head {
-    padding: 14px 14px;
+    padding: 14px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
 
-  .lc-course {
-    font-size: 20px;
-  }
+  .lc-course { font-size: 20px; }
+  .lc-meta { line-height: 1.4; }
+  .lc-winner { width: 100%; justify-content: center; padding: 8px 12px; font-size: 15px; }
+  .lc-body { padding: 14px; }
 
-  .lc-meta {
-    line-height: 1.4;
-  }
-
-  .lc-winner {
-    width: 100%;
-    justify-content: center;
-    padding: 8px 12px;
-    font-size: 15px;
-  }
-
-  .lc-body {
-    padding: 14px;
-  }
-
-  .rtiles {
-    gap: 1px;
-  }
-
-  .rtile {
-    padding: 16px 16px;
-  }
-
-  .tcourse {
-    font-size: 16px;
-  }
-
+  .rtile { padding: 16px; }
+  .tcourse { font-size: 16px; }
   .rw .ydiv,
-  .hw .ydiv {
-    gap: 10px;
-  }
+  .hw .ydiv { gap: 10px; }
 
   .rch {
     grid-template-columns: 1fr auto 24px;
     gap: 10px;
-    padding: 14px 14px;
-  }
-
-  .rhco {
-    display: none;
-  }
-
-  .rhd {
-    font-size: 12px;
-  }
-
-  .rhs {
-    font-size: 9px;
-  }
-
-  .rhw {
-    padding: 4px 8px;
-    font-size: 13px;
-  }
-
-  .rcb {
     padding: 14px;
   }
 
-  .ph {
-    font-size: 30px;
-  }
+  .rhco { display: none; }
+  .rhd { font-size: 12px; }
+  .rhs { font-size: 9px; }
+  .rhw { padding: 4px 8px; font-size: 13px; }
+  .rcb { padding: 14px; overflow-x: hidden; }
 
-  .ps {
-    font-size: 10px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-
-  .sbn {
-    font-size: 30px;
-  }
+  .ph { font-size: 30px; }
+  .ps { font-size: 10px; line-height: 1.5; margin-bottom: 20px; }
+  .sbn { font-size: 30px; }
 
   .ht {
     display: block;
+    max-width: 100%;
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
   }
 
   .ht th,
-  .ht td {
-    padding: 10px 12px;
-    font-size: 12px;
-  }
-
+  .ht td { padding: 10px 12px; font-size: 12px; }
   .htn,
-  .hts {
-    font-size: 16px;
-  }
+  .hts { font-size: 16px; }
 
-  .tc {
-    padding: 20px 16px;
-  }
-
-  .tcn {
-    font-size: 44px;
-  }
-
-  .tcna {
-    font-size: 14px;
-  }
-
-  .tcy {
-    font-size: 9px;
-    line-height: 1.5;
-  }
+  .tc { padding: 20px 16px; }
+  .tcn { font-size: 44px; }
+  .tcna { font-size: 14px; }
+  .tcy { font-size: 9px; line-height: 1.5; }
 
   .rev {
-    padding: 14px 14px;
+    padding: 14px;
     font-size: 15px;
     line-height: 1.7;
+    overflow-wrap: anywhere;
   }
 
-  .revl {
-    font-size: 8px;
-  }
+  .revl { font-size: 8px; }
 
   .modal {
     width: 100vw;
@@ -587,35 +504,15 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
     border: none;
   }
 
-  .modal-head {
-    padding: 14px 16px;
-  }
-
-  .modal-title {
-    font-size: 20px;
-  }
-
-  .modal-sub {
-    font-size: 10px;
-  }
-
-  .modal-body {
-    padding: 16px;
-  }
+  .modal-head { padding: 14px 16px; }
+  .modal-title { font-size: 20px; }
+  .modal-sub { font-size: 10px; }
+  .modal-body { padding: 16px; }
 
   .form-row,
-  .form-row-3 {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .player-block {
-    padding: 12px;
-  }
-
-  .player-block-name {
-    font-size: 15px;
-  }
+  .form-row-3 { grid-template-columns: 1fr; gap: 10px; }
+  .player-block { padding: 12px; }
+  .player-block-name { font-size: 15px; }
 
   .hole-grid,
   .hole-labels-row {
@@ -626,65 +523,31 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
   .form-input,
   .form-select,
-  .form-textarea {
-    font-size: 16px;
-  }
-
-  .form-input.hole-input {
-    min-height: 38px;
-    padding: 6px 4px;
-    font-size: 13px;
-  }
-
+  .form-textarea { font-size: 16px; }
+  .form-input.hole-input { min-height: 38px; padding: 6px 4px; font-size: 13px; }
   .sub-cell,
-  .tot-cell {
-    padding: 8px 2px;
-    font-size: 12px;
-  }
+  .tot-cell { padding: 8px 2px; font-size: 12px; }
+  .form-submit { width: 100%; padding: 12px 16px; }
 
-  .form-submit {
-    width: 100%;
-    padding: 12px 16px;
-  }
+  .scorecard-desktop { display: none; }
+  .scorecard-mobile { display: block; }
 
-  .scw {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -4px 14px;
-    padding: 0 4px 2px;
+  .mobile-card-title { padding: 10px; }
+  .mobile-card-title span:first-child { font-size: 17px; }
+  .mobile-total { font-size: 11px; }
+  .mobile-score-table thead th { font-size: 8px; padding: 8px 2px; }
+  .mobile-score-table thead th:first-child,
+  .mobile-score-table tbody td:first-child {
+    width: 76px;
+    min-width: 76px;
+    padding-left: 8px;
   }
-
-  .sc {
-    min-width: 760px;
-    font-size: 12px;
-  }
-
-  .sc thead tr.hr th {
-    font-size: 8.5px;
-    padding: 8px 4px;
-  }
-
-  .sc tbody td {
-    padding: 8px 4px;
-    font-size: 12px;
-  }
-
-  .sc tbody td:first-child,
-  .sc thead tr.hr th:first-child,
-  .sc .pr td:first-child {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-  }
-
-  .sc .pr td:first-child {
-    background: #e8f0e8;
-  }
-
-  .wr td:first-child {
-    background: #f3fbf5;
-  }
+  .mobile-score-table tbody td:first-child { font-size: 14px; }
+  .mobile-score-table th,
+  .mobile-score-table td { padding: 8px 2px; font-size: 11px; }
+  .mobile-score-table .par-row td { font-size: 9px; }
+  .mobile-score-table .sum-cell,
+  .mobile-score-table .total-cell { font-size: 11px; }
 
   .bi,
   .bsq,
@@ -696,6 +559,7 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
 
   footer {
     padding: 18px 14px;
+    overflow: hidden;
   }
 
   .fi {
@@ -705,15 +569,9 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   }
 
   .fb,
-  .fy {
-    font-size: 10px;
-    line-height: 1.4;
-  }
+  .fy { font-size: 10px; line-height: 1.4; }
 
-  #slogo {
-    width: 130px;
-  }
-
+  #slogo { width: 130px; }
   #sname {
     font-size: 11px;
     letter-spacing: .35em;
@@ -722,7 +580,27 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0}
   }
 }
 
-  .scw::-webkit-scrollbar,
+@media (max-width: 430px) {
+  .sg { grid-template-columns: 1fr; }
+  .cdn { font-size: 34px; }
+  .cdu { padding: 0 10px; }
+  .champ-name { font-size: 27px; }
+  .ph { font-size: 26px; }
+  .sec-title { font-size: 18px; }
+  .nbrand img { width: 26px; }
+  .nbrand-t { font-size: 16px; }
+  .nbtn { font-size: 9px; letter-spacing: .1em; }
+  .mobile-score-table thead th:first-child,
+  .mobile-score-table tbody td:first-child {
+    width: 66px;
+    min-width: 66px;
+  }
+  .mobile-score-table tbody td:first-child { font-size: 13px; }
+  .mobile-score-table th,
+  .mobile-score-table td { font-size: 10.5px; }
+}
+
+.scw::-webkit-scrollbar,
 .ht::-webkit-scrollbar {
   height: 6px;
 }
@@ -988,7 +866,7 @@ function buildScorecard(roundId, course) {
   const parOut = par.slice(0,9).reduce((a,v)=>a+v,0);
   const parIn  = par.slice(9).reduce((a,v)=>a+v,0);
 
-  let html = `<div class="scw"><table class="sc"><thead>
+  let desktop = `<div class="scorecard-desktop"><div class="scw"><table class="sc"><thead>
     <tr class="hr">
       <th></th>
       ${HOLES.slice(0,9).map(h=>`<th>${h}</th>`).join('')}
@@ -1013,7 +891,7 @@ function buildScorecard(roundId, course) {
     const inp = hs.slice(9).reduce((a,v)=>a+(v||0),0);
     const tot = s.total;
     const isWin = winner && s.player === winner.player;
-    html += `<tr class="${isWin?'wr':''}">
+    desktop += `<tr class="${isWin?'wr':''}">
       <td>${player}${isWin?' 🏆':''}</td>
       ${hs.slice(0,9).map((v,i)=>scoreCellHtml(v,par[i])).join('')}
       <td class="sub">${out}</td>
@@ -1023,14 +901,63 @@ function buildScorecard(roundId, course) {
     </tr>`;
   });
 
-  html += '</tbody></table></div>';
-  return html;
+  desktop += '</tbody></table></div></div>';
+
+  function mobileSection(start, end, label, summaryLabel) {
+    const holes = HOLES.slice(start, end);
+    const holePars = par.slice(start, end);
+    return `<div class="mobile-card">
+      <div class="mobile-card-title">
+        <span>${label}</span>
+        <span class="mobile-total">${summaryLabel}</span>
+      </div>
+      <div class="scw">
+        <table class="mobile-score-table">
+          <thead>
+            <tr>
+              <th></th>
+              ${holes.map(h => `<th>${h}</th>`).join('')}
+              <th>${start === 0 ? 'Out' : 'In'}</th>
+              ${start === 9 ? '<th>Total</th>' : ''}
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="par-row">
+              <td>Par</td>
+              ${holePars.map(p => `<td>${p}</td>`).join('')}
+              <td class="sum-cell">${start === 0 ? parOut : parIn}</td>
+              ${start === 9 ? `<td class="total-cell">${parTotal}</td>` : ''}
+            </tr>
+            ${PLAYERS.map(player => {
+              const s = scores.find(x => x.player === player);
+              if (!s) return '';
+              const hs = holeScores(s);
+              const segment = hs.slice(start, end);
+              const segmentTotal = segment.reduce((a,v)=>a+(v||0),0);
+              const isWin = winner && s.player === winner.player;
+              return `<tr class="${isWin?'winner-row':''}">
+                <td>${player}${isWin?' 🏆':''}</td>
+                ${segment.map((v,i)=>scoreCellHtml(v,holePars[i]).replace('<td>','').replace('</td>','')).map(content => `<td>${content}</td>`).join('')}
+                <td class="sum-cell">${segmentTotal}</td>
+                ${start === 9 ? `<td class="total-cell">${s.total}</td>` : ''}
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  const mobile = `<div class="scorecard-mobile">${mobileSection(0,9,'Front 9',`${parOut} par`)}${mobileSection(9,18,'Back 9',`${parIn} par · ${parTotal} total`)}</div>`;
+
+  return desktop + mobile;
 }
+
 
 // ── DASHBOARD ──
 function renderDashboard() {
   if (!allRounds.length) {
-    document.getElementById('dash-content').innerHTML = '<div class="wrap"><p style="color:var(--mu);font-style:italic;font-family:EB Garamond,serif;font-size:18px">No rounds yet. Add your first round via the Admin button.</p></div>';
+    document.getElementById('dash-content').innerHTML = '<div class="wrap"><p style="color:var(--mu);font-style:italic;font-family:Cormorant Garamond,serif;font-size:18px">No rounds yet. Add your first round via the Admin button.</p></div>';
     return;
   }
 
@@ -1179,7 +1106,7 @@ function tick() {
 // ── ROUNDS PAGE ──
 function renderRounds() {
   if (!allRounds.length) {
-    document.getElementById('rounds-content').innerHTML = '<div class="rw"><p style="color:var(--mu);font-style:italic;font-family:EB Garamond,serif;font-size:18px">No rounds recorded yet.</p></div>';
+    document.getElementById('rounds-content').innerHTML = '<div class="rw"><p style="color:var(--mu);font-style:italic;font-family:Cormorant Garamond,serif;font-size:18px">No rounds recorded yet.</p></div>';
     return;
   }
 
@@ -1409,8 +1336,11 @@ async function submitRound() {
 
   // Check at least one player has scores
   const hasScores = PLAYERS.some(player =>
-  HOLES.some(h => parseInt(document.getElementById(`${player}-h${h}`)?.value))
-);
+    HOLES.some(h => {
+      const val = document.getElementById(`${player}-h${h}`)?.value;
+      return val !== '' && val != null;
+    })
+  );
   if (!hasScores) { err.textContent = 'Please enter at least one player\'s scores.'; err.style.display='block'; return; }
 
   btn.disabled = true; btn.textContent = 'Saving...';
