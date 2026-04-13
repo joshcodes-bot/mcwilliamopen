@@ -1147,10 +1147,20 @@ function holeScores(score) {
   return HOLES.map(h => score['h'+h]);
 }
 
+function playedParTotal(holeValues, parValues) {
+  return holeValues.reduce((sum, v, i) => sum + (v != null ? (parValues[i] || 0) : 0), 0);
+}
+
 function getWinner(roundId) {
   const scores = getScoresForRound(roundId);
   if (!scores.length) return null;
-  return scores.reduce((best, s) => s.total < best.total ? s : best);
+
+  const minTotal = Math.min(...scores.map(s => s.total));
+  const leaders = scores.filter(s => s.total === minTotal);
+
+  if (leaders.length !== 1) return null; // tie = no winner
+
+  return leaders[0];
 }
 
 function formatDate(d) {
@@ -1181,9 +1191,9 @@ function buildScorecard(roundId, course) {
   const par = getPar(course);
   const scores = getScoresForRound(roundId);
   const winner = getWinner(roundId);
-  const parTotal = sumHoles(par);
-  const parOut = par.slice(0, 9).reduce((a, v) => a + v, 0);
-  const parIn = par.slice(9).reduce((a, v) => a + v, 0);
+  const fullParTotal = sumHoles(par);
+  const fullParOut = par.slice(0, 9).reduce((a, v) => a + v, 0);
+  const fullParIn = par.slice(9).reduce((a, v) => a + v, 0);
 
   let desktop = `<div class="scorecard-desktop"><div class="scw"><table class="sc"><thead>
     <tr class="hr">
@@ -1197,10 +1207,10 @@ function buildScorecard(roundId, course) {
     <tr class="pr">
       <td>Par</td>
       ${par.slice(0, 9).map(p => `<td>${p}</td>`).join('')}
-      <td>${parOut}</td>
+      <td>${fullParOut}</td>
       ${par.slice(9).map(p => `<td>${p}</td>`).join('')}
-      <td>${parIn}</td>
-      <td>${parTotal}</td>
+      <td>${fullParIn}</td>
+      <td>${fullParTotal}</td>
     </tr>
   </thead><tbody>`;
 
@@ -1209,18 +1219,21 @@ function buildScorecard(roundId, course) {
     if (!s) return;
 
     const hs = holeScores(s);
-    const out = hs.slice(0, 9).reduce((a, v) => a + (v || 0), 0);
-    const inp = hs.slice(9).reduce((a, v) => a + (v || 0), 0);
+    const frontHs = hs.slice(0, 9);
+    const backHs = hs.slice(9);
+    const out = frontHs.reduce((a, v) => a + (v || 0), 0);
+    const inp = backHs.reduce((a, v) => a + (v || 0), 0);
     const tot = s.total;
+    const totalParPlayed = playedParTotal(hs, par);
     const isWin = winner && s.player === winner.player;
 
     desktop += `<tr class="${isWin ? 'wr' : ''}">
       <td>${player}${isWin ? ' 🏆' : ''}</td>
-      ${hs.slice(0, 9).map((v, i) => scoreCellHtml(v, par[i])).join('')}
+      ${frontHs.map((v, i) => scoreCellHtml(v, par[i])).join('')}
       <td class="sub">${out}</td>
-      ${hs.slice(9).map((v, i) => scoreCellHtml(v, par[i + 9])).join('')}
+      ${backHs.map((v, i) => scoreCellHtml(v, par[i + 9])).join('')}
       <td class="sub">${inp}</td>
-      <td class="tot">${tot} (${toPar(tot, parTotal)})</td>
+      <td class="tot">${tot} (${toPar(tot, totalParPlayed)})</td>
     </tr>`;
   });
 
@@ -1248,8 +1261,8 @@ function buildScorecard(roundId, course) {
           <tr class="par-row">
             <td>Par</td>
             ${holePars.map(p => `<td>${p}</td>`).join('')}
-            <td class="sum-cell">${start === 0 ? parOut : parIn}</td>
-            ${start === 9 ? `<td class="total-cell">${parTotal}</td>` : ''}
+            <td class="sum-cell">${start === 0 ? fullParOut : fullParIn}</td>
+            ${start === 9 ? `<td class="total-cell">${fullParTotal}</td>` : ''}
           </tr>
           ${PLAYERS.map(player => {
             const s = scores.find(x => x.player === player);
@@ -1258,6 +1271,7 @@ function buildScorecard(roundId, course) {
             const hs = holeScores(s);
             const segment = hs.slice(start, end);
             const segmentTotal = segment.reduce((a, v) => a + (v || 0), 0);
+            const totalParPlayed = playedParTotal(hs, par);
             const isWin = winner && s.player === winner.player;
 
             return `<tr class="${isWin ? 'winner-row' : ''}">
@@ -1267,7 +1281,7 @@ function buildScorecard(roundId, course) {
                 return `<td>${content}</td>`;
               }).join('')}
               <td class="sum-cell">${segmentTotal}</td>
-              ${start === 9 ? `<td class="total-cell">${s.total}</td>` : ''}
+              ${start === 9 ? `<td class="total-cell">${s.total} (${toPar(s.total, totalParPlayed)})</td>` : ''}
             </tr>`;
           }).join('')}
         </tbody>
@@ -1277,8 +1291,8 @@ function buildScorecard(roundId, course) {
 
   const mobile = `
     <div class="scorecard-mobile">
-      ${mobileSection(0, 9, 'Front 9', `${parOut} par`)}
-      ${mobileSection(9, 18, 'Back 9', `${parIn} par · ${parTotal} total`)}
+      ${mobileSection(0, 9, 'Front 9', `${fullParOut} par`)}
+      ${mobileSection(9, 18, 'Back 9', `${fullParIn} par · ${fullParTotal} total`)}
     </div>
   `;
 
@@ -1296,7 +1310,7 @@ function renderDashboard() {
 
   const champ = allRounds[0] || null;
   const champWinner = champ ? getWinner(champ.id) : null;
-  const champPar = champ ? sumHoles(getPar(champ.course)) : 72;
+  const champParValues = champ ? getPar(champ.course) : PAR_DEFAULT;
 
   const allTimeWins = {};
   PLAYERS.forEach(p => allTimeWins[p] = 0);
@@ -1321,7 +1335,7 @@ function renderDashboard() {
 
   const latest = allRounds[0];
   const latestWinner = getWinner(latest.id);
-  const latestPar = sumHoles(getPar(latest.course));
+  const latestParValues = getPar(latest.course);
   const prev = allRounds.slice(1, 4);
   const champTitles = champWinner ? allTimeWins[champWinner.player] : 0;
 
@@ -1338,7 +1352,7 @@ function renderDashboard() {
           <div class="champ-sub">${champ ? formatDate(champ.date) + ' &nbsp;·&nbsp; ' + champ.course : ''}</div>
           <div class="champ-stats">
             <div class="cstat">
-              <div class="cstat-n">${champWinner ? toPar(champWinner.total, champPar) : '—'}</div>
+              <div class="cstat-n">${champWinner ? toPar(champWinner.total, playedParTotal(holeScores(champWinner), champParValues)) : '—'}</div>
               <div class="cstat-l">Score to Par</div>
             </div>
             <div class="cstat">
@@ -1394,7 +1408,14 @@ function renderDashboard() {
             <div class="lc-course">${latest.course}</div>
             <div class="lc-meta">${formatDate(latest.date)} &nbsp;·&nbsp; ${latest.round_type === 'championship' ? 'Boxing Day Championship' : 'Season Round'} &nbsp;·&nbsp; ${latest.year}</div>
           </div>
-          ${latestWinner ? `<div class="lc-winner">&#127942; ${latestWinner.player} McWilliam &nbsp;&mdash;&nbsp; ${latestWinner.total} (${toPar(latestWinner.total, latestPar)})</div>` : ''}
+          ${latestWinner
+  ? (() => {
+      const hs = holeScores(latestWinner);
+      const playedPar = playedParTotal(hs, latestParValues);
+      return `<div class="lc-winner">&#127942; ${latestWinner.player} McWilliam &nbsp;&mdash;&nbsp; ${latestWinner.total} (${toPar(latestWinner.total, playedPar)})</div>`;
+    })()
+  : `<div class="lc-winner">Tied round &nbsp;&mdash;&nbsp; no win awarded</div>`
+}
         </div>
         <div class="lc-body">
           ${buildScorecard(latest.id, latest.course)}
@@ -1410,7 +1431,7 @@ function renderDashboard() {
         <div class="rtiles">
           ${prev.map(r => {
             const w = getWinner(r.id);
-            const par = sumHoles(getPar(r.course));
+            const coursePar = getPar(r.course);
             return `
               <div class="rtile" onclick="showPage('rounds')">
                 <div class="tarr">&rarr;</div>
@@ -1471,13 +1492,14 @@ function renderRounds() {
     html += `<div class="yb"><div class="ydiv"><div class="yl">${label}</div><div class="yline"></div></div>`;
     rounds.forEach(r => {
       const winner = getWinner(r.id);
-      const par = sumHoles(getPar(r.course));
+      const coursePar = getPar(r.course);
+      const winnerPar = winner ? playedParTotal(holeScores(winner), coursePar) : null;
       html += `
         <div class="rc" onclick="toggleCard(this)">
           <div class="rch">
             <div><div class="rhd">${formatDate(r.date)}</div><div class="rhs">${r.round_type==='championship'?'Championship':'Season Round'}</div></div>
             <div class="rhco">${r.course}</div>
-            <div class="rhw">${winner?`&#127942; ${winner.player} &nbsp;${winner.total} (${toPar(winner.total,par)})`:''}</div>
+            <div class="rhw">${winner ? `&#127942; ${winner.player} &nbsp;${winner.total} (${toPar(winner.total,winnerPar)})` : 'Tied round'}</div>
             <div class="rhch">&#9662;</div>
           </div>
           <div class="rcb">
@@ -1525,7 +1547,7 @@ function renderHistory() {
           <div class="sbl">Course Record${crRound ? ` (${crRound.year})` : ''}</div>
         </div>
           <div class="sb">
-          <div class="sbn">${courseRecord ? toPar(courseRecord.total, sumHoles(getPar(crRound?.course || ''))) : '—'}</div>
+          <div class="sbn">${courseRecord ? toPar(courseRecord.total, playedParTotal(holeScores(courseRecord), getPar(crRound?.course || ''))) : '—'}</div>
           <div class="sbl">Best to Par</div>
         </div>
       </div>
@@ -1543,11 +1565,12 @@ function renderHistory() {
         <tbody>
           ${historyRounds.map(r => {
             const w = getWinner(r.id);
-            const par = sumHoles(getPar(r.course));
+            const parValues = getPar(r.course);
+            const winnerPar = w ? playedParTotal(holeScores(w), parValues) : null;
             return `<tr>
               <td class="hty">${r.year}</td>
               <td class="htn">${w ? w.player : '—'}</td>
-              <td class="hts">${w ? `${w.total} (${toPar(w.total, par)})` : ''}</td>
+              <td class="hts">${w ? `${w.total} (${toPar(w.total, winnerPar)})` : ''}</td>
               <td style="font-size:13px;color:var(--mu)">${r.course}</td>
               <td>
                 <span class="htb">${r.round_type === 'championship' ? 'Championship' : 'Season'}</span>
