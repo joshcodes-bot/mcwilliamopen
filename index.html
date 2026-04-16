@@ -213,7 +213,7 @@ nav{
 .sec-link{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--g3);cursor:pointer;border:none;background:none}
 .sec-link:hover{text-decoration:underline}
 .season-row{border:1px solid var(--bd);margin-bottom:24px;background:var(--w)}
-.season-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd)}
+.season-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd)}
 .player-card{background:#fcfdfb;padding:20px 26px}
 .pc-pos{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
 .pc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--g);margin-bottom:2px}
@@ -231,7 +231,7 @@ nav{
 .lc-body{padding:20px 24px}
 
 /* Round tiles */
-.rtiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
+.rtiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
 .rtile{background:var(--w);padding:20px 20px;cursor:pointer;transition:background .12s;position:relative;overflow:hidden}
 .rtile:hover{background:var(--of)}
 .rtile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .2s}
@@ -341,7 +341,7 @@ nav{
 .htn{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic}
 .hts{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--g)}
 .htb{display:inline-block;background:#eef7f1;border:1px solid #c8decd;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;color:var(--g);font-weight:600}
-.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd)}
 .tc{background:#fcfdfb;padding:30px 20px;text-align:center}
 .tcn{font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:500;color:var(--g);line-height:1}
 .tcna{font-size:15px;font-weight:600;margin-top:10px}
@@ -402,6 +402,85 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
 .hl{font-size:9px;text-align:center;color:var(--mu);letter-spacing:.04em}
 .hl.sub{background:none!important;font-size:9px;color:var(--g4)}
 .hl.tot2{background:none!important;font-size:9px;color:var(--g4)}
+
+
+/* flatter refinement */
+.hero-strip,.latest-card,.season-row,.rc,.mobile-card,.sb,.tc,.player-card,.champ-panel,.countdown-panel,.rtile{
+  box-shadow:none;
+}
+.latest-card,.season-row,.rc,.mobile-card,.sb,.tc,.player-card,.champ-panel,.countdown-panel,.rtile,
+.analysis-hero,.analysis-stat,.analysis-card,.summary-player,.pb-item,.mini-row,.handicap-strip,.hcp-item{
+  border-radius:2px;
+}
+.top-row,.rtiles,.season-inner,.sg,.tg{background:transparent;border:none;gap:12px}
+.champ-panel,.countdown-panel,.player-card,.sb,.tc,.rtile{border:1px solid var(--bd)}
+.rcb{border-top:1px solid var(--bd)}
+.hero-strip{border-radius:2px}
+
+/* ── ANALYSIS ── */
+@keyframes analysisRise{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.aw{max-width:1160px;margin:0 auto;padding:34px 32px 48px}
+.analysis-hero,.handicap-strip,.analysis-grid,.analysis-card,.summary-player,.chart-card{animation:analysisRise .42s ease both}
+.analysis-hero{border:1px solid var(--bd);background:#fcfdfb;padding:22px 24px;margin-bottom:16px}
+.analysis-top{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.analysis-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-style:italic;color:var(--g);line-height:1}
+.analysis-sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-top:6px}
+.analysis-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.analysis-select-wrap{min-width:220px}
+.analysis-select{height:44px;border:1px solid var(--bd);background:#fff;padding:0 14px;font-size:14px;font-family:'Inter',sans-serif;color:var(--tx);min-width:220px}
+.analysis-select:focus{outline:none;border-color:var(--g)}
+.analysis-note{margin-top:14px;padding-top:14px;border-top:1px solid var(--lg);font-size:13px;color:var(--tl);line-height:1.45}
+.handicap-strip{display:grid;grid-template-columns:220px repeat(3,1fr);gap:1px;background:var(--g4);border:1px solid var(--g4);margin-bottom:16px}
+.hcp-label,.hcp-item{background:var(--g);color:#fff;padding:16px 18px}
+.hcp-label-k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.72);font-weight:600;margin-bottom:8px}
+.hcp-label-v{font-family:'Cormorant Garamond',serif;font-size:28px;line-height:1}
+.hcp-item-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.hcp-name{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.88)}
+.hcp-value{font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:#fff}
+.hcp-sub{font-size:12px;color:rgba(255,255,255,.72);margin-top:6px}
+.analysis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.analysis-stat{border:1px solid var(--bd);background:#fcfdfb;padding:17px 18px}
+.analysis-stat.highlight{background:#eef7f1;border-color:#c8decd}
+.analysis-stat-k{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mu);font-weight:600;margin-bottom:12px}
+.analysis-stat-v{font-family:'Cormorant Garamond',serif;font-size:31px;color:var(--g);line-height:1.04}
+.analysis-stat-s{font-size:13px;color:var(--tl);margin-top:8px;line-height:1.4}
+.analysis-card{border:1px solid var(--bd);background:#fcfdfb;padding:20px}
+.analysis-card+.analysis-card{margin-top:16px}
+.analysis-card-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--g);margin-bottom:4px}
+.analysis-card-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:14px}
+.summary-board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.summary-player{border:1px solid var(--bd);background:#fff;padding:18px}
+.summary-player.current{border-color:var(--g)}
+.summary-name{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--g);line-height:1;margin-bottom:12px}
+.summary-line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--lg);font-size:13px}
+.summary-line:first-of-type{border-top:none;padding-top:0}
+.summary-line-label{color:var(--mu);text-transform:uppercase;letter-spacing:.08em;font-size:10px;font-weight:600}
+.summary-line-value{color:var(--tx);font-weight:600}
+.summary-line-value.good{color:var(--g)}
+.chart-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
+.chart-card{border:1px solid var(--bd);background:#fcfdfb;padding:20px}
+.chart-head{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.chart-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--g)}
+.chart-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:4px}
+.chart-wrap{border:1px solid var(--lg);background:#fff;padding:10px}
+.chart-wrap svg{display:block;width:100%;height:auto}
+.chart-note{font-size:12px;color:var(--tl);margin-top:10px;line-height:1.5}
+.chart-key{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.chart-key-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tl)}
+.chart-key-swatch{width:14px;height:2px;background:var(--g);display:inline-block}
+.chart-key-item:nth-child(2) .chart-key-swatch{background:var(--g3)}
+.chart-key-item:nth-child(3) .chart-key-swatch{background:#8ea99a}
+@media (max-width: 768px){
+  .aw{padding:18px 14px 26px}
+  .analysis-title{font-size:30px}
+  .analysis-hero,.analysis-card,.analysis-stat,.chart-card{padding:18px}
+  .analysis-grid,.summary-board,.chart-grid,.handicap-strip{grid-template-columns:1fr}
+  .analysis-select{width:100%;min-width:0}
+  .analysis-select-wrap{width:100%}
+}
 
 @media (max-width: 768px) {
   html, body {
@@ -947,6 +1026,7 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
         <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
         <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
         <button class="nbtn" onclick="showPage('history')">Records</button>
+        <button class="nbtn" onclick="showPage('analysis')">Analysis</button>
       </div>
     </div>
 
@@ -974,6 +1054,11 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
   <!-- HISTORY -->
   <div id="page-history" class="page">
     <div id="history-content"></div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div id="page-analysis" class="page">
+    <div id="analysis-content"></div>
   </div>
 </div>
 
@@ -1147,8 +1232,12 @@ function holeScores(score) {
   return HOLES.map(h => score['h'+h]);
 }
 
+function playedHoleCount(holeValues) {
+  return holeValues.filter(v => v != null).length;
+}
+
 function playedParTotal(holeValues, parValues) {
-  return holeValues.reduce((sum, v, i) => sum + (v != null ? (parValues[i] || 0) : 0), 0);
+  return holeValues.reduce((sum, v, i) => sum + (v != null ? parValues[i] : 0), 0);
 }
 
 function getWinner(roundId) {
@@ -1221,6 +1310,7 @@ function buildScorecard(roundId, course) {
     const hs = holeScores(s);
     const frontHs = hs.slice(0, 9);
     const backHs = hs.slice(9);
+
     const out = frontHs.reduce((a, v) => a + (v || 0), 0);
     const inp = backHs.reduce((a, v) => a + (v || 0), 0);
     const tot = s.total;
@@ -1300,7 +1390,223 @@ function buildScorecard(roundId, course) {
 }
 
 
-// ── DASHBOARD ──
+
+function normalizeCourseName(course) {
+  return (course || '').trim().toLowerCase();
+}
+
+function roundForScore(score) {
+  return allRounds.find(r => r.id === score.round_id) || null;
+}
+
+function getPlayerScores(player) {
+  return allScores.filter(s => s.player === player);
+}
+
+function average(nums) {
+  return nums.length ? nums.reduce((a,b)=>a+b,0) / nums.length : null;
+}
+
+function formatAvg(n, digits = 1) {
+  return n == null ? '—' : Number(n).toFixed(digits);
+}
+
+function formatScoreWithPar(total, par) {
+  if (total == null || par == null) return '—';
+  return `${total} (${toPar(total, par)})`;
+}
+
+function getPlayerWins(player) {
+  return allRounds.reduce((sum, r) => {
+    const w = getWinner(r.id);
+    return sum + (w && w.player === player ? 1 : 0);
+  }, 0);
+}
+
+function getPlayerAnalysis(player) {
+  const scores = getPlayerScores(player);
+  const roundsPlayed = scores.length;
+  const holeStats = HOLES.map(hole => {
+    const values = scores.map(s => s['h'+hole]).filter(v => v != null);
+    return {
+      hole,
+      rounds: values.length,
+      avg: average(values),
+      best: values.length ? Math.min(...values) : null,
+      worst: values.length ? Math.max(...values) : null,
+      birdiesOrBetter: scores.filter(s => {
+        const round = roundForScore(s);
+        const par = getPar(round?.course || '');
+        const val = s['h'+hole];
+        return val != null && val <= par[hole-1] - 1;
+      }).length,
+      pars: scores.filter(s => {
+        const round = roundForScore(s);
+        const par = getPar(round?.course || '');
+        const val = s['h'+hole];
+        return val != null && val === par[hole-1];
+      }).length,
+      bogeyPlus: scores.filter(s => {
+        const round = roundForScore(s);
+        const par = getPar(round?.course || '');
+        const val = s['h'+hole];
+        return val != null && val >= par[hole-1] + 1;
+      }).length,
+    };
+  });
+
+  const playerRounds = scores.map(s => {
+    const round = roundForScore(s);
+    if (!round) return null;
+    const course = round.course || '';
+    const par = getPar(course);
+    const hs = holeScores(s);
+    const parPlayed = playedParTotal(hs, par);
+    return {
+      score: s,
+      round,
+      course,
+      par,
+      total: s.total,
+      front: calcOut(hs),
+      back: calcIn(hs),
+      parPlayed,
+      toPar: parPlayed ? toPar(s.total, parPlayed) : '—'
+    };
+  }).filter(Boolean);
+
+  const totals = playerRounds.map(x => x.total).filter(v => v != null);
+  const frontTotals = playerRounds.map(x => x.front).filter(v => v > 0);
+  const backTotals = playerRounds.map(x => x.back).filter(v => v > 0);
+  const toParValues = playerRounds.map(x => x.total - x.parPlayed).filter(v => Number.isFinite(v));
+
+  const bestRound = playerRounds.reduce((best, x) => (!best || x.total < best.total) ? x : best, null);
+  const bestFront = playerRounds.filter(x => x.front > 0).reduce((best, x) => (!best || x.front < best.front) ? x : best, null);
+  const bestBack = playerRounds.filter(x => x.back > 0).reduce((best, x) => (!best || x.back < best.back) ? x : best, null);
+  const morrinsvilleRounds = playerRounds.filter(x => normalizeCourseName(x.course).includes('morrinsville'));
+  const bestMorrinsvilleBack = morrinsvilleRounds.filter(x => x.back > 0).reduce((best, x) => (!best || x.back < best.back) ? x : best, null);
+
+  const worstSingleHole = scores.reduce((best, s) => {
+    HOLES.forEach(h => {
+      const val = s['h'+h];
+      if (val == null) return;
+      if (!best || val > best.score) {
+        const round = roundForScore(s);
+        best = { score: val, hole: h, course: round?.course || '—', date: round?.date || null };
+      }
+    });
+    return best;
+  }, null);
+
+  return {
+    player,
+    roundsPlayed,
+    wins: getPlayerWins(player),
+    avgTotal: average(totals),
+    avgFront: average(frontTotals),
+    avgBack: average(backTotals),
+    avgToPar: average(toParValues),
+    handicapEstimate: Math.max(0, average(toParValues) ?? 0),
+    bestRound,
+    bestFront,
+    bestBack,
+    worstSingleHole,
+    holeStats,
+    bestMorrinsvilleBack
+  };
+}
+
+function getOverallRecords() {
+  let highestHole = null;
+  let bestFront = null;
+  let bestBack = null;
+  let bestMorrinsvilleBack = null;
+  let bestTotal = null;
+
+  allScores.forEach(s => {
+    const round = roundForScore(s);
+    if (!round) return;
+    const hs = holeScores(s);
+
+    HOLES.forEach(h => {
+      const val = s['h'+h];
+      if (val == null) return;
+      if (!highestHole || val > highestHole.score) {
+        highestHole = { player: s.player, score: val, hole: h, course: round.course, date: round.date };
+      }
+    });
+
+    const front = calcOut(hs);
+    const back = calcIn(hs);
+
+    if (front > 0 && (!bestFront || front < bestFront.score)) {
+      bestFront = { player: s.player, score: front, course: round.course, date: round.date };
+    }
+    if (back > 0 && (!bestBack || back < bestBack.score)) {
+      bestBack = { player: s.player, score: back, course: round.course, date: round.date };
+    }
+    if (normalizeCourseName(round.course).includes('morrinsville') && back > 0 && (!bestMorrinsvilleBack || back < bestMorrinsvilleBack.score)) {
+      bestMorrinsvilleBack = { player: s.player, score: back, course: round.course, date: round.date };
+    }
+    if (s.total != null && (!bestTotal || s.total < bestTotal.total)) {
+      bestTotal = { player: s.player, total: s.total, course: round.course, date: round.date };
+    }
+  });
+
+  return { highestHole, bestFront, bestBack, bestMorrinsvilleBack, bestTotal };
+}
+
+function esc(s){return String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c] || c));}
+
+function getPlayerRoundSeries(player){
+  return allRounds.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).map((round, idx) => {
+    const s = allScores.find(x => x.round_id === round.id && x.player === player);
+    if (!s || s.total == null) return null;
+    return { x: idx + 1, label: formatDateShort(round.date), total: s.total, course: round.course || '' };
+  }).filter(Boolean);
+}
+
+function buildTrendChartSvg(playerStats){
+  const series = PLAYERS.map(player => ({ player, data: getPlayerRoundSeries(player) }));
+  const values = series.flatMap(s => s.data.map(p => p.total));
+  if (!values.length) return '<div class="chart-note">No round data yet.</div>';
+  const w=760,h=320,padL=46,padR=18,padT=16,padB=34;
+  const min=Math.min(...values)-1, max=Math.max(...values)+1;
+  const count=Math.max(...series.map(s=>s.data.length),1);
+  const x=(i)=> padL + ((w-padL-padR) * (count===1?0.5:i/(count-1)));
+  const y=(v)=> padT + ((max-v)/(max-min||1))*(h-padT-padB);
+  const colors=['var(--g)','var(--g3)','#8ea99a'];
+  let grid='';
+  for(let i=0;i<5;i++){ const val=min + (max-min)*(i/4); const yy=y(val); grid += `<line x1="${padL}" y1="${yy}" x2="${w-padR}" y2="${yy}" stroke="#e8e3d8" stroke-width="1"/><text x="${padL-8}" y="${yy+4}" text-anchor="end" font-size="10" fill="#9b9588">${Math.round(val)}</text>`; }
+  let body='';
+  series.forEach((s,si)=>{
+    if(!s.data.length) return;
+    const pts=s.data.map((p,i)=>`${x(i)},${y(p.total)}`).join(' ');
+    body += `<polyline fill="none" stroke="${colors[si]}" stroke-width="3" points="${pts}"/>`;
+    s.data.forEach((p,i)=>{ body += `<circle cx="${x(i)}" cy="${y(p.total)}" r="4" fill="${colors[si]}"/><title>${esc(s.player)} · ${esc(p.label)} · ${p.total}</title>`; });
+  });
+  let xlabels='';
+  const longest=series.reduce((a,b)=>a.data.length>=b.data.length?a:b,{data:[]}).data;
+  longest.forEach((p,i)=>{ xlabels += `<text x="${x(i)}" y="${h-10}" text-anchor="middle" font-size="10" fill="#9b9588">R${i+1}</text>`; });
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Round trend chart">${grid}<line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="#d9d4c9" stroke-width="1"/>${body}${xlabels}</svg>`;
+}
+
+function buildHoleAverageChartSvg(stats){
+  const vals=stats.holeStats.map(h=>h.avg).filter(v=>v!=null);
+  if (!vals.length) return '<div class="chart-note">No hole data yet.</div>';
+  const w=520,h=320,padL=28,padR=14,padT=12,padB=34;
+  const max=Math.max(...vals)+0.5;
+  const bw=(w-padL-padR)/18;
+  let grid='';
+  for(let i=0;i<4;i++){ const val=max*(i/3); const yy=padT + ((max-val)/(max||1))*(h-padT-padB); grid += `<line x1="${padL}" y1="${yy}" x2="${w-padR}" y2="${yy}" stroke="#e8e3d8" stroke-width="1"/>`; }
+  let bars='';
+  stats.holeStats.forEach((hs,idx)=>{
+    const v=hs.avg||0; const bh=((v)/(max||1))*(h-padT-padB); const xx=padL + idx*bw + 4; const yy=h-padB-bh;
+    bars += `<rect x="${xx}" y="${yy}" width="${Math.max(8,bw-8)}" height="${bh}" fill="var(--g)" opacity="${0.55 + ((idx%3)*0.12)}"/><text x="${xx+(Math.max(8,bw-8))/2}" y="${h-10}" text-anchor="middle" font-size="9" fill="#9b9588">${idx+1}</text><title>Hole ${idx+1}: ${v.toFixed(2)}</title>`;
+  });
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Hole averages chart">${grid}<line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="#d9d4c9" stroke-width="1"/>${bars}</svg>`;
+}
+
 function renderDashboard() {
   if (!allRounds.length) {
     document.getElementById('dash-content').innerHTML =
@@ -1310,7 +1616,7 @@ function renderDashboard() {
 
   const champ = allRounds[0] || null;
   const champWinner = champ ? getWinner(champ.id) : null;
-  const champParValues = champ ? getPar(champ.course) : PAR_DEFAULT;
+  const champPar = champ && champWinner ? playedParTotal(holeScores(champWinner), getPar(champ.course)) : 72;
 
   const allTimeWins = {};
   PLAYERS.forEach(p => allTimeWins[p] = 0);
@@ -1352,7 +1658,7 @@ function renderDashboard() {
           <div class="champ-sub">${champ ? formatDate(champ.date) + ' &nbsp;·&nbsp; ' + champ.course : ''}</div>
           <div class="champ-stats">
             <div class="cstat">
-              <div class="cstat-n">${champWinner ? toPar(champWinner.total, playedParTotal(holeScores(champWinner), champParValues)) : '—'}</div>
+              <div class="cstat-n">${champWinner ? toPar(champWinner.total, champPar) : '—'}</div>
               <div class="cstat-l">Score to Par</div>
             </div>
             <div class="cstat">
@@ -1409,13 +1715,13 @@ function renderDashboard() {
             <div class="lc-meta">${formatDate(latest.date)} &nbsp;·&nbsp; ${latest.round_type === 'championship' ? 'Boxing Day Championship' : 'Season Round'} &nbsp;·&nbsp; ${latest.year}</div>
           </div>
           ${latestWinner
-  ? (() => {
-      const hs = holeScores(latestWinner);
-      const playedPar = playedParTotal(hs, latestParValues);
-      return `<div class="lc-winner">&#127942; ${latestWinner.player} McWilliam &nbsp;&mdash;&nbsp; ${latestWinner.total} (${toPar(latestWinner.total, playedPar)})</div>`;
-    })()
-  : `<div class="lc-winner">Tied round &nbsp;&mdash;&nbsp; no win awarded</div>`
-}
+            ? (() => {
+                const hs = holeScores(latestWinner);
+                const playedPar = playedParTotal(hs, latestParValues);
+                return `<div class="lc-winner">&#127942; ${latestWinner.player} McWilliam &nbsp;&mdash;&nbsp; ${latestWinner.total} (${toPar(latestWinner.total, playedPar)})</div>`;
+              })()
+            : `<div class="lc-winner">Tied round &nbsp;&mdash;&nbsp; no win awarded</div>`
+          }
         </div>
         <div class="lc-body">
           ${buildScorecard(latest.id, latest.course)}
@@ -1431,7 +1737,6 @@ function renderDashboard() {
         <div class="rtiles">
           ${prev.map(r => {
             const w = getWinner(r.id);
-            const coursePar = getPar(r.course);
             return `
               <div class="rtile" onclick="showPage('rounds')">
                 <div class="tarr">&rarr;</div>
@@ -1492,14 +1797,17 @@ function renderRounds() {
     html += `<div class="yb"><div class="ydiv"><div class="yl">${label}</div><div class="yline"></div></div>`;
     rounds.forEach(r => {
       const winner = getWinner(r.id);
-      const coursePar = getPar(r.course);
-      const winnerPar = winner ? playedParTotal(holeScores(winner), coursePar) : null;
+      const parValues = getPar(r.course);
       html += `
         <div class="rc" onclick="toggleCard(this)">
           <div class="rch">
             <div><div class="rhd">${formatDate(r.date)}</div><div class="rhs">${r.round_type==='championship'?'Championship':'Season Round'}</div></div>
             <div class="rhco">${r.course}</div>
-            <div class="rhw">${winner ? `&#127942; ${winner.player} &nbsp;${winner.total} (${toPar(winner.total,winnerPar)})` : 'Tied round'}</div>
+            <div class="rhw">${winner ? (() => {
+              const hs = holeScores(winner);
+              const playedPar = playedParTotal(hs, getPar(r.course));
+              return `&#127942; ${winner.player} &nbsp;${winner.total} (${toPar(winner.total, playedPar)})`;
+            })() : 'Tied round'}</div>
             <div class="rhch">&#9662;</div>
           </div>
           <div class="rcb">
@@ -1547,7 +1855,7 @@ function renderHistory() {
           <div class="sbl">Course Record${crRound ? ` (${crRound.year})` : ''}</div>
         </div>
           <div class="sb">
-          <div class="sbn">${courseRecord ? toPar(courseRecord.total, playedParTotal(holeScores(courseRecord), getPar(crRound?.course || ''))) : '—'}</div>
+          <div class="sbn">${courseRecord ? toPar(courseRecord.total, sumHoles(getPar(crRound?.course || ''))) : '—'}</div>
           <div class="sbl">Best to Par</div>
         </div>
       </div>
@@ -1566,11 +1874,14 @@ function renderHistory() {
           ${historyRounds.map(r => {
             const w = getWinner(r.id);
             const parValues = getPar(r.course);
-            const winnerPar = w ? playedParTotal(holeScores(w), parValues) : null;
             return `<tr>
               <td class="hty">${r.year}</td>
               <td class="htn">${w ? w.player : '—'}</td>
-              <td class="hts">${w ? `${w.total} (${toPar(w.total, winnerPar)})` : ''}</td>
+              <td class="hts">${w ? (() => {
+                const hs = holeScores(w);
+                const playedPar = playedParTotal(hs, parValues);
+                return `${w.total} (${toPar(w.total, playedPar)})`;
+              })() : ''}</td>
               <td style="font-size:13px;color:var(--mu)">${r.course}</td>
               <td>
                 <span class="htb">${r.round_type === 'championship' ? 'Championship' : 'Season'}</span>
@@ -1603,15 +1914,160 @@ function renderHistory() {
     </footer>`;
 }
 
+function renderAnalysis() {
+  const container = document.getElementById('analysis-content');
+  if (!container) return;
+  if (!allRounds.length || !allScores.length) {
+    container.innerHTML = '<div class="aw"><p style="color:var(--mu);font-style:italic;font-family:Cormorant Garamond,serif;font-size:18px">No rounds recorded yet.</p></div>';
+    return;
+  }
+
+  const selectedPlayer = document.getElementById('analysis-player-select')?.value || PLAYERS[0];
+  const playerStats = Object.fromEntries(PLAYERS.map(player => [player, getPlayerAnalysis(player)]));
+  const stats = playerStats[selectedPlayer];
+  const records = getOverallRecords();
+
+  const bestAvgTotal = Math.min(...PLAYERS.map(player => playerStats[player].avgTotal).filter(v => v != null));
+  const mostWins = Math.max(...PLAYERS.map(player => playerStats[player].wins));
+  const bestRoundTotal = Math.min(...PLAYERS.map(player => playerStats[player].bestRound?.total).filter(v => v != null));
+  const bestFrontTotal = Math.min(...PLAYERS.map(player => playerStats[player].bestFront?.front).filter(v => v != null));
+  const bestBackTotal = Math.min(...PLAYERS.map(player => playerStats[player].bestBack?.back).filter(v => v != null));
+  const lowestHandicap = Math.min(...PLAYERS.map(player => playerStats[player].handicapEstimate).filter(v => v != null));
+
+  container.innerHTML = `
+    <div class="aw">
+      <div class="analysis-hero">
+        <div class="analysis-top">
+          <div>
+            <div class="analysis-title">Analysis</div>
+            <div class="analysis-sub">Cleaner summary up top · graphs underneath</div>
+          </div>
+          <div class="analysis-controls">
+            <div class="analysis-select-wrap">
+              <label class="form-label" for="analysis-player-select">Hole Average Graph</label>
+              <select id="analysis-player-select" class="analysis-select" onchange="renderAnalysis()">
+                ${PLAYERS.map(player => `<option value="${player}" ${player === selectedPlayer ? 'selected' : ''}>${player}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="analysis-note">Top row shows the key records and the three-way summary. Under that, the graphs make it easier to compare form and see where each player tends to leak shots.</div>
+      </div>
+
+      <div class="handicap-strip">
+        <div class="hcp-label">
+          <div class="hcp-label-k">Handicap Estimator</div>
+          <div class="hcp-label-v">Rough playing index</div>
+        </div>
+        ${PLAYERS.map(player => {
+          const p = playerStats[player];
+          return `
+            <div class="hcp-item">
+              <div class="hcp-item-top">
+                <div class="hcp-name">${player}</div>
+                <div class="hcp-value">${formatAvg(p.handicapEstimate,1)}</div>
+              </div>
+              <div class="hcp-sub">${p.avgToPar == null ? 'No rounds yet' : `${formatAvg(p.avgToPar,1)} over par on average`}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-stat">
+          <div class="analysis-stat-k">Highest Score on One Hole</div>
+          <div class="analysis-stat-v">${records.highestHole ? records.highestHole.score : '—'}</div>
+          <div class="analysis-stat-s">${records.highestHole ? `${records.highestHole.player} · Hole ${records.highestHole.hole} · ${records.highestHole.course}` : 'No data yet'}</div>
+        </div>
+        <div class="analysis-stat">
+          <div class="analysis-stat-k">Best Front 9 Record</div>
+          <div class="analysis-stat-v">${records.bestFront ? records.bestFront.score : '—'}</div>
+          <div class="analysis-stat-s">${records.bestFront ? `${records.bestFront.player} · ${records.bestFront.course}` : 'No data yet'}</div>
+        </div>
+        <div class="analysis-stat">
+          <div class="analysis-stat-k">Best Back 9 Record</div>
+          <div class="analysis-stat-v">${records.bestBack ? records.bestBack.score : '—'}</div>
+          <div class="analysis-stat-s">${records.bestBack ? `${records.bestBack.player} · ${records.bestBack.course}` : 'No data yet'}</div>
+        </div>
+        <div class="analysis-stat highlight">
+          <div class="analysis-stat-k">Lowest Round on File</div>
+          <div class="analysis-stat-v">${records.bestTotal ? records.bestTotal.total : '—'}</div>
+          <div class="analysis-stat-s">${records.bestTotal ? `${records.bestTotal.player} · ${records.bestTotal.course}` : 'No data yet'}</div>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">Three-Way Summary</div>
+        <div class="analysis-card-sub">Quick compare of the full field</div>
+        <div class="summary-board">
+          ${PLAYERS.map(player => {
+            const p = playerStats[player];
+            const avgClass = p.avgTotal === bestAvgTotal ? 'good' : '';
+            const winClass = p.wins === mostWins && mostWins > 0 ? 'good' : '';
+            const bestRoundClass = p.bestRound?.total === bestRoundTotal ? 'good' : '';
+            const bestFrontClass = p.bestFront?.front === bestFrontTotal && p.bestFront?.front != null ? 'good' : '';
+            const bestBackClass = p.bestBack?.back === bestBackTotal && p.bestBack?.back != null ? 'good' : '';
+            const handicapClass = p.handicapEstimate === lowestHandicap ? 'good' : '';
+            return `
+              <div class="summary-player ${player === selectedPlayer ? 'current' : ''}">
+                <div class="summary-name">${player}</div>
+                <div class="summary-line"><span class="summary-line-label">Handicap</span><span class="summary-line-value ${handicapClass}">${formatAvg(p.handicapEstimate,1)}</span></div>
+                <div class="summary-line"><span class="summary-line-label">Average</span><span class="summary-line-value ${avgClass}">${formatAvg(p.avgTotal,1)}</span></div>
+                <div class="summary-line"><span class="summary-line-label">Wins</span><span class="summary-line-value ${winClass}">${p.wins}</span></div>
+                <div class="summary-line"><span class="summary-line-label">Best Round</span><span class="summary-line-value ${bestRoundClass}">${p.bestRound ? p.bestRound.total : '—'}</span></div>
+                <div class="summary-line"><span class="summary-line-label">Best Front</span><span class="summary-line-value ${bestFrontClass}">${p.bestFront ? p.bestFront.front : '—'}</span></div>
+                <div class="summary-line"><span class="summary-line-label">Best Back</span><span class="summary-line-value ${bestBackClass}">${p.bestBack ? p.bestBack.back : '—'}</span></div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title">Round Trend</div>
+              <div class="chart-sub">Total score by round for all three players</div>
+            </div>
+          </div>
+          <div class="chart-wrap">${buildTrendChartSvg(playerStats)}</div>
+          <div class="chart-key">
+            ${PLAYERS.map(player => `<div class="chart-key-item"><span class="chart-key-swatch"></span>${player}</div>`).join('')}
+          </div>
+          <div class="chart-note">Lower is better. This gives a cleaner look at who has been trending down and who has been more consistent.</div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title">${selectedPlayer} Hole Averages</div>
+              <div class="chart-sub">Average score by hole across rounds on file</div>
+            </div>
+          </div>
+          <div class="chart-wrap">${buildHoleAverageChartSvg(stats)}</div>
+          <div class="chart-note">This helps spot the holes that are usually costing ${selectedPlayer} the most shots.</div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="fi">
+        <div class="fb">McWilliam Open &nbsp;·&nbsp; Est. 2026</div>
+        <div class="fy">&copy; 2026 McWilliam Family</div>
+      </div>
+    </footer>`;
+}
+
 // ── NAV ──
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  const i = ['dashboard','rounds','history'].indexOf(id);
+  const i = ['dashboard','rounds','history','analysis'].indexOf(id);
   document.querySelectorAll('.nbtn')[i]?.classList.add('active');
   if (id === 'rounds') renderRounds();
   if (id === 'history') renderHistory();
+  if (id === 'analysis') renderAnalysis();
 }
 
 function toggleCard(c) {
@@ -1739,6 +2195,7 @@ async function submitRound() {
   renderDashboard();
   if (document.getElementById('page-rounds').classList.contains('active')) renderRounds();
   if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+  if (document.getElementById('page-analysis').classList.contains('active')) renderAnalysis();
 
   // Clear form
   setTimeout(() => {
