@@ -18,7 +18,7 @@
 }
 html,body{min-height:100%;width:100%;max-width:100%;background:#000;font-family:'Inter',sans-serif;color:var(--tx);overflow-x:hidden}
 body{overflow-x:hidden;overflow-y:auto}
-  
+
 /* SPLASH */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 1.2s ease,visibility 1.2s ease}
 #splash.out{opacity:0;visibility:hidden;pointer-events:none}
@@ -133,6 +133,11 @@ nav{
   color:var(--mu);
   white-space:nowrap;
 }
+
+/* Hide hamburger + drawer on desktop */
+.nhamburger{display:none}
+.ndrawer{display:none}
+.ndrawer-backdrop{display:none}
 
 /* PAGES */
 .page{display:none;flex:1;background:var(--w)}
@@ -508,63 +513,78 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
     min-width: 0;
   }
 
+  /* ── HAMBURGER NAV (mobile) ── */
   nav{
-    height:auto;
-    display:flex;
-    flex-direction:column;
+    height:60px;
+    display:grid;
+    grid-template-columns:44px 1fr auto;
     align-items:center;
-    padding:14px 16px 12px;
-    gap:12px;
+    padding:0 14px;
+    gap:10px;
   }
 
   .nleft{
-    width:100%;
-    order:2;
-    justify-content:center;
+    order:1;
+    justify-content:flex-start;
+    width:auto;
   }
 
-  .nbrand{
-    order:1;
-    width:100%;
+  /* Hide inline nav links on mobile — replaced by drawer */
+  .nlinks{
+    display:none;
+  }
+
+  /* Hamburger button */
+  .nhamburger{
     display:flex;
-    align-items:center;
+    flex-direction:column;
     justify-content:center;
-    gap:10px;
-    text-align:center;
+    gap:5px;
+    width:32px;
+    height:32px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:4px;
+    position:relative;
+    z-index:10;
+  }
+
+  .nhamburger span{
+    display:block;
+    height:2px;
+    width:100%;
+    background:var(--g);
+    transition:transform .25s ease, opacity .2s ease;
+    transform-origin:center;
+  }
+
+  .nhamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nhamburger.open span:nth-child(2){opacity:0}
+  .nhamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  .nbrand{
+    order:2;
+    justify-self:center;
+    gap:8px;
+    grid-column:auto;
   }
 
   .nbrand img{
-    width:36px;
+    width:30px;
   }
 
   .nbrand-t{
-    font-size:22px;
+    font-size:18px;
     font-weight:700;
     line-height:1;
     white-space:nowrap;
   }
 
-  .nlinks{
-    width:100%;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:4px;
-  }
-
-  .nbtn{
-    height:42px;
-    justify-content:center;
-    padding:0 4px;
-    font-size:10px;
-    font-weight:600;
-    letter-spacing:.12em;
-  }
-
   .nright{
     order:3;
-    width:100%;
-    display:flex;
-    justify-content:center;
+    width:auto;
+    justify-content:flex-end;
   }
 
   .nav-italic{
@@ -572,9 +592,67 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
   }
 
   .nadmin-btn{
-    padding:7px 14px;
-    font-size:10px;
-    font-weight:600;
+    padding:6px 10px;
+    font-size:9px;
+    letter-spacing:.1em;
+    white-space:nowrap;
+  }
+
+  /* Side drawer */
+  .ndrawer{
+    display:flex;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    width:78%;
+    max-width:320px;
+    background:#fff;
+    border-right:1px solid var(--bd);
+    z-index:600;
+    transform:translateX(-100%);
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+    flex-direction:column;
+    padding:80px 0 20px;
+    box-shadow:2px 0 20px rgba(0,0,0,0.08);
+  }
+
+  .ndrawer.open{
+    transform:translateX(0);
+  }
+
+  .ndrawer-backdrop{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:550;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .25s, visibility .25s;
+  }
+
+  .ndrawer-backdrop.open{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .ndrawer .nbtn{
+    height:56px;
+    width:100%;
+    justify-content:flex-start;
+    padding:0 28px;
+    font-size:12px;
+    letter-spacing:.18em;
+    border-bottom:1px solid var(--lg);
+    border-left:3px solid transparent;
+  }
+
+  .ndrawer .nbtn.active{
+    border-bottom-color:var(--lg);
+    border-left-color:var(--g);
+    background:#f5fbf7;
+    color:var(--g);
   }
 
   .wrap,
@@ -983,9 +1061,14 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
   .champ-name { font-size: 27px; }
   .ph { font-size: 26px; }
   .sec-title { font-size: 18px; }
-  .nbrand img { width: 30px; }
-  .nbrand-t { font-size: 19px; }
-  .nbtn { font-size: 9px; letter-spacing: .1em; }
+  .nbrand img { width: 28px; }
+  .nbrand-t { font-size: 17px; }
+
+  .nadmin-btn{
+    padding:5px 9px;
+    font-size:9px;
+    letter-spacing:.08em;
+  }
 
   .mobile-score-table thead th:first-child,
   .mobile-score-table tbody td:first-child {
@@ -1022,6 +1105,11 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
 <div id="app">
   <nav>
     <div class="nleft">
+      <!-- Hamburger (mobile only) -->
+      <button class="nhamburger" id="hamburger-btn" onclick="toggleDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <!-- Inline nav links (desktop only) -->
       <div class="nlinks">
         <button class="nbtn active" onclick="showPage('dashboard')">Home</button>
         <button class="nbtn" onclick="showPage('rounds')">Rounds</button>
@@ -1040,6 +1128,15 @@ footer{background:var(--g);padding:24px 32px;flex-shrink:0;border-top:1px solid 
       <button class="nadmin-btn" id="admin-btn" onclick="openAdminPanel()">Admin</button>
     </div>
   </nav>
+
+  <!-- Side drawer (mobile only) -->
+  <div class="ndrawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer()"></div>
+  <aside class="ndrawer" id="drawer">
+    <button class="nbtn active" onclick="showPage('dashboard'); toggleDrawer()">Home</button>
+    <button class="nbtn" onclick="showPage('rounds'); toggleDrawer()">Rounds</button>
+    <button class="nbtn" onclick="showPage('history'); toggleDrawer()">Records</button>
+    <button class="nbtn" onclick="showPage('analysis'); toggleDrawer()">Analysis</button>
+  </aside>
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
@@ -2064,7 +2161,9 @@ function showPage(id) {
   document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   const i = ['dashboard','rounds','history','analysis'].indexOf(id);
-  document.querySelectorAll('.nbtn')[i]?.classList.add('active');
+  // Highlight both desktop and drawer buttons matching the active page
+  document.querySelectorAll(`.nlinks .nbtn:nth-child(${i+1}), .ndrawer .nbtn:nth-child(${i+1})`)
+    .forEach(b => b.classList.add('active'));
   if (id === 'rounds') renderRounds();
   if (id === 'history') renderHistory();
   if (id === 'analysis') renderAnalysis();
@@ -2074,6 +2173,13 @@ function toggleCard(c) {
   const was = c.classList.contains('open');
   document.querySelectorAll('.rc').forEach(x => x.classList.remove('open'));
   if (!was) c.classList.add('open');
+}
+
+// ── DRAWER (mobile nav) ──
+function toggleDrawer() {
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('drawer-backdrop').classList.toggle('open');
+  document.getElementById('hamburger-btn').classList.toggle('open');
 }
 
 // ── OVERLAYS ──
